@@ -22,12 +22,12 @@ const cookies = require("cookie-parser");
 app.use(cookies());
 
 // Variables que toman valores de 'path'
-const entProducc = global.path.basename(__dirname) == "1-Demo";
+const entProducc = global.path.basename(__dirname) == "1-Delibreri";
 const entPrueba = global.path.basename(__dirname) == "2-Prueba";
 const entDesarr = !entProducc && !entPrueba;
 
 // Listener - para conectarse con el servidor
-const puerto = entProducc ? 4203 : entPrueba ? 4207 : 3004;
+const puerto = entProducc ? 4203 : entPrueba ? 4207 : 3007;
 const carpCreds = "/archsCliente/0-credenciales";
 if (entDesarr) {
 	const https = require("https");
@@ -35,8 +35,8 @@ if (entDesarr) {
 		cert: fs.readFileSync(path.join(__dirname, carpCreds, "https-cert.pem")),
 		key: fs.readFileSync(path.join(__dirname, carpCreds, "https-clave.pem")),
 	};
-	https.createServer(opciones, app).listen(puerto, () => console.log("\nLR Demo - Servidor funcionando...")); // Para conectarse con el servidor
-} else app.listen(puerto, () => console.log("\nLR Demo - Servidor funcionando..."));
+	https.createServer(opciones, app).listen(puerto, () => console.log("\nLR Delibreri - Servidor funcionando...")); // Para conectarse con el servidor
+} else app.listen(puerto, () => console.log("\nLR Delibreri - Servidor funcionando..."));
 
 // Variables que dependen del entorno
 const entornoBd = !entDesarr ? "produccion" : "desarrollo";
