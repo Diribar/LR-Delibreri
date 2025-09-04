@@ -1,0 +1,23 @@
+#marcoChico #cargaArchs {
+	width: max-content; max-width: 100%;
+	display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start;
+	flex-wrap: wrap;
+	table {
+		margin-bottom: 10px;
+		& :is(th, td) {padding-block: 5px;}
+	}
+	#izquierda {
+		position: relative; margin-right: 80px;
+		#statusArch {position: absolute; bottom: 0; translate: 0 100%; width: max-content;}
+		ul li {margin-left: 40px;}
+	}
+	#derecha {
+		display: flex; flex-direction: column; align-items: center;
+		#mensajes {
+			align-self: flex-start;
+			margin-left: 8px;
+			& > li {margin-top: 3px;}
+		}
+	}
+	&:has(#izquierda #statusArch:not(:empty)) #derecha #mensajes {display: none;}
+}

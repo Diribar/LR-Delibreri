@@ -1,0 +1,107 @@
+<table id="<%= subTema %>" class="tabla">
+	<thead>
+		<tr class="lectura">
+			<th class="centro">Código</th>
+			<th class="izq anchoLargo">Descripción</th>
+			<% if (subTema == "maestroMovs") { %>
+				<th class="centro">IN</th>
+				<th class="centro anchoMedio">OUT</th>
+				<th class="centro anchoMedio">Esencial</th>
+			<% } else if (subTema == "maestroDeps") { %>
+				<th class="izq anchoCorto">Nave</th>
+				<th class="centro">LR</th>
+			<% } %>
+			<th class="centro">En uso</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% let pintar = false %>
+		<% for (const registro of registros) { %>
+			<!-- Lectura y eliminar -->
+			<tr class="lectura <%- pintar ? 'pintar' : '' %>">
+				<td id="id" class="centro"><%= registro.id %></td>
+				<td class="izq anchoLargo"><%= registro.descripcion %></td>
+				<% if (subTema == "maestroMovs") { %>
+					<td class="centro"><%= registro.inLr ? "SI" : "NO" %></td>
+					<td class="centro anchoMedio"><%= registro.solucOut && registro.solucOut.nombre || "-" %></td>
+					<td class="centro anchoMedio"><%= registro.esencial ? "SI" : "NO" %></td>
+				<% } else if (subTema == "maestroDeps") { %>
+					<td class="izq anchoCorto"><%= registro.nave %></td>
+					<td class="centro"><%= registro.lr ? "SI" : "NO" %></td>
+				<% } %>
+				<td class="centro"><%- registro.enUso ? "SI" : "NO" %></td>
+				<td class="iconos <% if (registro.esencial && usuario.rol_id != rolProp_id) { %>ocultar<% } %>">
+					<i class="<%= iconos.edicion %> edicion"></i>
+					<i class="<%= iconos.eliminar %> eliminar"></i>
+				</td>
+			</tr>
+			<!-- Edición -->
+			<tr class="edicion ocultar <%= pintar ? 'pintar' : '' %>">
+				<td class="centro"><input name="id" type="text" class="centro" value="<%= registro.id %>"></td>
+				<td class="izq"><input name="anchoLargo" type="text" class="izq" value="<%= registro.descripcion %>"></td>
+				<% if (subTema == "maestroMovs") { %>
+					<td class="centro">
+						<select name="inLr" class="centro">
+							<option value="1" <% if (registro.inLr) { %>selected<% } %>>SI</option>
+							<option value="0" <% if (!registro.inLr) { %>selected<% } %>>NO</option>
+						</select>
+					</td>
+					<td class="centro">
+						<select name="solucOut_id" class="centro">
+							<% for (const solucOut of solucsOut) { %>
+								<option value="<%= solucOut.id %>" <% if (registro.solucOut_id == solucOut.id) { %>selected<% } %>><%= solucOut.nombre %></option>
+							<% } %>
+						</select>
+					</td>
+					<td class="centro"><%= registro.esencial ? "SI" : "NO" %></td>
+				<% } else if (subTema == "maestroDeps") { %>
+					<td class="izq anchoCorto"><input name="nave" type="text" class="izq" value="<%= registro.nave %>"></td>
+					<td class="centro">
+						<select name="lr" class="centro">
+							<option value="1" <% if (registro.lr) { %>selected<% } %>>SI</option>
+							<option value="0" <% if (!registro.lr) { %>selected<% } %>>NO</option>
+						</select>
+					</td>
+					<% } %>
+				<td class="centro"><%- registro.enUso ? "SI" : "NO" %></td>
+				<td class="iconos">
+					<i class="<%= iconos.derecha %> salir"></i>
+					<i class="<%= iconos.guardar %> actualizar inactivo"></i>
+				</td>
+			</tr>
+			<% pintar = !pintar %>
+		<% } %>
+		<!-- Agrega un registro -->
+		<tr class="agrega">
+			<td class="centro"><input name="id" type="text" class="centro" placeholder="?"></td>
+			<td class="izq"><input name="anchoLargo" type="text" class="izq" placeholder="escribilo"></td>
+			<% if (subTema == "maestroMovs") { %>
+				<td class="centro">
+					<select name="inLr" class="centro">
+						<option value="">?</option>
+						<option value="1">SI</option>
+						<option value="0">NO</option>
+					</select>
+				</td>
+				<td class="centro">
+					<select name="solucOut_id" class="centro">
+						<option value="">Elegí</option>
+						<% for (const solucOut of solucsOut) { %>
+							<option value="<%= solucOut.id %>"><%= solucOut.nombre %></option>
+						<% } %>
+					</select>
+				</td>
+			<% } else if (subTema == "maestroDeps") { %>
+				<td class="izq anchoCorto"><input name="nave" type="text" class="izq" placeholder="escribilo"></td>
+				<td class="centro">
+					<select name="lr" class="centro">
+						<option value="">?</option>
+						<option value="1">SI</option>
+						<option value="0">NO</option>
+					</select>
+				</td>
+			<% } %>
+			<td class="iconos"><i class="<%= iconos.agregar %>"></i></td>
+		</tr>
+	</tbody>
+</table>

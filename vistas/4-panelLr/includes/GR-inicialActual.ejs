@@ -1,0 +1,21 @@
+<div>
+	<h2 class="">LR Total</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Inicio</th>
+				<th>Proy.</th>
+				<th>Δ</th>
+				<th>%</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr id="total">
+				<td class="naranjaOscuro"><%= comp.moneda(valorLr123Inicial) %></td>
+				<td class=""><%= comp.moneda(valorLrProy) %></td>
+				<td class="verdeInterm"><%= comp.moneda(valorLrProy - valorLr123Inicial) %></td>
+				<td><%= compLrProyLr123Inicial %>%</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

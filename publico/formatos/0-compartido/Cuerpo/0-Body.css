@@ -1,0 +1,70 @@
+/* Formatos */
+html {font-size: 14px;} /* debe estar en 'html', porque es de donde donde toma referencia el 'rem' */
+
+/* Variables que no se usan en js front-end */
+body {
+	--colorAyuda: white;
+	--backAyuda: var(--grisOscuro);
+	--bordeAyuda: var(--amarilloClaro);
+	--colorTitulo: var(--grisOscuro);
+	--backTitulo: var(--amarilloClaro);
+	--bordeTitulo: var(--naranjaOscuro);
+	--colorMensajeError: var(--rojoOscuro);
+	--backMensajeError: var(--amarilloClaro);
+	--backIcono: white;
+	--backFlechas: var(--celesteOscuro);
+	--bordeFlechas: var(--azulOscuro);
+	--backComandos: var(--verdeOscuro);
+}
+
+/* Otras variables */
+body {
+	/* Alto */
+	--altoHeader: clamp(52px, calc(var(--alturaViewPort) * 0.08), 60px);
+
+	/* Marco */
+	--altoMain: calc(var(--alturaViewPort) - var(--altoHeader) - var(--altoFooter));
+	--altoMainPadding: 20px; /* padding */
+	--altoMarcoGrandePadding: 15px; /* padding */
+	--altoTituloPrincipal: calc(35px + 15px);
+	--altoMarcoChico: calc(
+		var(--altoMain) -
+		var(--altoMainPadding) * 2 -
+		var(--altoMarcoGrandePadding) * 2 -
+		var(--altoTituloPrincipal)
+	);
+	--altoMarcoChicoPadding: 25px;
+	/* --altoTituloSecundario: calc(21px + 15px);
+	--altoTablas: calc(var(--altoMarcoChico) - var(--altoMarcoChicoPadding) * 2 - var(--altoTituloSecundario)); */
+
+	/* Desplazamiento horizontal */
+	--altoBoton: 200px;
+	--anchoBoton: 290px;
+
+	/* Otros */
+	--datosBreves: 220px;
+}
+
+/* Formatos */
+body {
+	height: var(--alturaViewPort); width: 100vw;
+	line-height: inherit;
+	display: flex; flex-direction: column;
+	background-size: cover; background-attachment: fixed; background-position: center center;
+	background-image: url("/imgsComp/2-Instancias/0-Demo/0. Inicio.jpg");
+	&:has(header #usuarios.activo) {background-image: url("/imgsComp/2-Instancias/0-Demo/1. Usuarios.jpg");}
+	&:has(header #abmUsuarios.activo) {background-image: url("/imgsComp/2-Instancias/0-Demo/2. ABM usuarios.jpg");}
+	&:has(header #configuracion.activo) {background-image: url("/imgsComp/2-Instancias/0-Demo/3. Configuracion.jpg");}
+	&:has(header #cargaArchs.activo) {background-image: url("/imgsComp/2-Instancias/0-Demo/4. Carga archs.jpg");}
+}
+body, * {
+	margin: 0px; padding: 0; box-sizing: border-box;
+}
+body * {
+	font-family: 'Calibri', 'Trebuchet MS', 'sans-serif'; color: inherit;
+	&:focus {outline-color: black;}
+}
+@view-transition {navigation: auto;}
+::view-transition-group(*) {
+	animation-duration: 500ms;
+}

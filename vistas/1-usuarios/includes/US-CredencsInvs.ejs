@@ -1,0 +1,5 @@
+<div id="credenciales" class="<%- (locals.errores && !errores.credenciales) ? ' ocultar' : '' %>">
+	<button class="mensajeError bordeRojo">
+		<%- locals.errores && errores.credenciales && "Credenciales inválidas" %>
+	</button>
+</div>

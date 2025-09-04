@@ -1,0 +1,5 @@
+table.tabla {
+	/* Para inmovilizar el encabezado y que se desplace el contenido */
+	thead, tbody {display: block;}
+	tbody {overflow-y: auto; max-height: 400px;}
+}

@@ -1,0 +1,6 @@
+main {
+	display: flex; flex-direction: column; flex-grow: 1;
+	justify-content: center; align-items: center;
+	max-width: 100%; max-height: var(--altoMain);
+	position: relative;
+}

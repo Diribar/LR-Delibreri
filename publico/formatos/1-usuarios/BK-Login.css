@@ -1,0 +1,13 @@
+/* Parado */
+@media (orientation: portrait) {
+	#cuerpoFooterImgDer {
+		#cuerpo #dataEntry {
+			min-width: min-content; width: 85vw;
+			.labelInput {
+				justify-content: center;
+				label {display: none;}
+			}
+		}
+		#imgDerecha img {display: none;}
+	}
+}

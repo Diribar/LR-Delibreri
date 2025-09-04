@@ -1,0 +1,19 @@
+<form method="post" id="fechasClave">
+	<div id="izquierda">
+		<div class="inputError flexRowAlign">
+			<label>Desde: <input type="date" class="input" name="fechaInicio" value="<%= dataEntry.fechaInicio || ((new Date().getFullYear() + 1) + "-01-01") %>"></label>
+			<label>Plazo:
+				<select class="input" name="codPlazo">
+					<% for (let plazo of auxPlazos) { %>
+						<option value="<%= plazo.codigo %>" <% if (!dataEntry.codPlazo || dataEntry.codPlazo == plazo.codigo) { %>selected<% } %>>
+							<%= plazo.nombre %>
+						</option>
+					<% } %>
+				</select>
+			</label>
+			<p>Hasta: <span></span></p>
+			<%- include("MN-Errores") %>
+		</div>
+		<button class="verde">Confirmá y bloqueá<br>esta información</button>
+	</div>
+</form>

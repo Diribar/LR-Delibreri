@@ -1,0 +1,30 @@
+main .cartelCentro {
+	/* Formato general */
+	width: max-content; max-width: min(600px, 95vw);
+	max-height: 95%; color: var(--grisClaro);
+	padding: 20px; border-radius: 15px; border: 6px double white;
+
+	/* Específico del cartel de Progreso */
+	&#cartelProgreso {
+		min-width: 250px; background: var(--azulOscuro);
+		#titulo {
+			margin-bottom: 15px; font-size: 1.5rem;
+			&:empty {display: none;}
+		}
+		#contorno {
+			border: solid 1px var(--amarilloClaro); height: 18px; width: 200px; border-radius: 10px; overflow: hidden;
+			#progreso {background: var(--amarilloClaro); width: 0; height: 100%; transition: 100ms;}
+		}
+	}
+}
+
+/* Acostado */
+@media (orientation: landscape) and (width <= 1250px) {.cartelCentro #mensajes {margin-top: 10px;}}
+
+/* Parado */
+@media (orientation: portrait) {
+	.cartelCentro {
+		.inicio {margin-bottom: 30px;}
+		#mensajes {margin-inline: 10px;}
+	}
+}

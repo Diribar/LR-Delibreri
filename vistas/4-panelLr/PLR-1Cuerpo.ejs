@@ -1,0 +1,17 @@
+<% for (const tipoGrafico of tiposGraficos) { %>
+	<section id="<%= tipoGrafico.id %>" class="zonaPanel <%= tipoGrafico.id == etiqActiva ? 'activo' : 'tapado' %>">
+		<div id="tituloSecundario"><%- tipoGrafico.titulo %></div>
+		<% if (tipoGrafico.comentario) { %><p><%= tipoGrafico.comentario %></p><% } %>
+
+		<div id="informacion">
+			<% if (tipoGrafico.id == "planesAccion") { %>
+				<%- include("GR-planesAccion") %>
+			<% } else { %>
+				<div id="grafico"></div>
+				<div id="texto">
+					<% if (tipoGrafico.include) { %><%- include("GR-" + tipoGrafico.id) %><% } %>
+				</div>
+			<% } %>
+		</div>
+	</section>
+<% } %>

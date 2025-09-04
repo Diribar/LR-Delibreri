@@ -1,0 +1,44 @@
+#marcoChico {
+	position: relative;
+	#tituloSecundario {margin-bottom: 0px !important;}
+	p {line-height: 1;}
+	.zonaPanel{
+		position: absolute;
+		/* border: 1px solid red; */
+		height: calc(100% - var(--altoMarcoChicoPadding) * 2); width: calc(100% - 70px);
+		display: flex; flex-direction: column;
+		&.tapado {z-index: -1;}
+		#informacion {
+			flex-grow: 1;
+			display: flex; flex-direction: row; align-items: center;
+			#grafico {
+				height: 100%;
+				display: flex; flex-direction: column; justify-content: center; justify-content: center;
+				/* & > div {border: 1px solid blue;} */
+			}
+			#texto {
+				flex-grow: 1; height: 100%;
+				display: flex; flex-direction: column; align-items: center; justify-content: center;
+				table {
+					.naranjaOscuro {background-color: var(--naranjaOscuro); color: snow;}
+					.naranjaClaro {background-color: var(--naranjaClaro);}
+					.azulOscuro {background-color: var(--azulOscuro); color: snow;}
+					.verdeInterm {background-color: var(--verdeInterm); color: snow;}
+					.rojoOscuro {background-color: var(--rojoOscuro); color: snow;}
+				}
+				button {
+					color: var(--grisClaro);
+					padding: 10px 15px; font-size: 1.5rem;
+					border-radius: 10px; border: none;
+					&.bien {background-color: var(--verdeOscuro);}
+					&.danger {background-color: var(--rojoOscuro);}
+				}
+			}
+		}
+	}
+	#porPeriodo #informacion #grafico {width: calc(100% - 300px);}
+	#porAntig #informacion #grafico {width: calc(100% - 00px);}
+	#planesAccion #informacion #grafico {width: calc(100% - 300px);}
+	/* #inicialActual #informacion #grafico {width: calc(100% - 500px);} */
+	/* #carrera #informacion #grafico {width: calc(100% - 300px);} */
+}

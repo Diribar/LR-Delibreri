@@ -1,0 +1,10 @@
+<section id="fechasClave">
+	<form id="izquierda" method="post">
+		<div class="flexRow">
+			<p><b>Desde:</b> <%= comp.fechas["dd/mmm/aaaa"](FC_inicio) %></p>
+			<p><b>Plazo:</b> <%= fechasPlazo.nombre %></p>
+			<p><b>Hasta:</b> <%= comp.fechas["dd/mmm/aaaa"](FC_fin) %></p>
+		</div>
+		<button class="rojo">Desbloqueá<br>esta información</button>
+	</form>
+</section>

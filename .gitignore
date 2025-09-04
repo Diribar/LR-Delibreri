@@ -1,0 +1,10 @@
+# Carpetas
+node_modules
+archsCliente
+baseDatos/varios/*.sql
+
+# Archivos
+~*
+*.zip
+*.pptx
+*.pem

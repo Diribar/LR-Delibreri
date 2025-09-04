@@ -1,0 +1,34 @@
+table.seccion {
+	/* Encabezado y todo el body */
+	border-collapse: collapse; margin-top: 5px;
+	tr {
+		& :where(th, td) {
+			&.izq {text-align: left;}
+			&.centro {text-align: center;}
+			&.der {text-align: right;}
+			--paddingInLine: 7.5px;
+			padding-inline: var(--paddingInLine); padding-block: 3px;
+		}
+		td.pesos {
+			position: relative; padding-left: calc(var(--paddingInLine) + 15px);
+			&::before {content:"$"; position: absolute; left: var(--paddingInLine);}
+		}
+		td:has(select, input[type="text"]) {
+			background-color: var(--amarilloClaro) !important;
+			padding-inline: 0;
+			select, input {
+				background-color: transparent; border: none; appearance: none;
+				padding-inline: var(--paddingInLine);
+				&:focus {outline: none;}
+			}
+			input::placeholder {color: black;}
+		}
+	}
+	tbody:has(tr#nuevoPlan) tr:nth-last-of-type(2) td {border-bottom: 1px solid black;}
+
+	/* Encabezado */
+	thead tr th {background-color: var(--verdeOscuro); color: var(--celesteClaro); padding-block: 3px;}
+
+	/* Body */
+	tbody tr.pintar td {background-color: var(--celesteClaro);}
+}

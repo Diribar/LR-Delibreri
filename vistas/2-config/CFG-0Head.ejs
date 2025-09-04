@@ -1,0 +1,23 @@
+<% if (subTema == "fechasClave") { %>
+	<link rel="stylesheet" href="/formatos/2-config/CFG-1FechasClave.css">
+	<% if (!FC_bloq) { %><script src="/js/2-config/CFG-1FC-Input.js"></script><% } %>
+
+<% } else { %>
+	<link rel="stylesheet" href="/formatos/0-compartido/Main/MN-TablaFormato.css">
+<% } %>
+
+<% if (["maestroMovs", "maestroDeps", "archsInput"].includes(subTema)) { %>
+	<script src="/js/2-config/CFG-2MaestrosCrud.js"></script>
+	<link rel="stylesheet" href="/formatos/0-compartido/Main/MN-TablaScroll.css">
+<% } %>
+
+<% if (["fechasClave", "cargaArchs"].includes(subTema)) { %>
+	<link rel="stylesheet" href="/formatos/0-compartido/Main/MN-BotonConfirmar.css">
+<% } %>
+
+<% if (subTema == "cargaArchs") { %>
+	<link rel="stylesheet" href="/formatos/0-compartido/Main/MN-DragDrop.css">
+	<link rel="stylesheet" href="/formatos/0-compartido/Main/MN-CargaArchs.css">
+	<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+	<script src="/js/0-compartido/CMP-DragDrop.js"></script>
+<% } %>

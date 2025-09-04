@@ -1,0 +1,46 @@
+<!-- Carteles -->
+<% if (subTema == "login") { %>
+	<%- include('MN-CartelProgr', {tarea: "Enviando el mail"}) %>
+	<%- include('US-CartelMailExitoso') %>
+<% } %>
+
+<!-- Form -->
+<form id="form" method="post">
+	<h1 id="tituloPrincipal" class="textoConSombra"><%= titulo %></h1>
+	<% for (let campo of campos) { %>
+		<% const {nombre, tipo, placeholder} = campo %>
+		<div class="inputError">
+			<!-- Input -->
+			<input class="input"
+				value="<%= dataEntry[nombre] %>"
+				type="<%= tipo %>"
+				name="<%= nombre %>"
+				placeholder="<%= placeholder %>"
+				<% if (dataEntry[nombre]) { %>autocomplete='new-password'<% } %>
+			>
+			<% if (tipo == "password") { %>
+				<!-- Ojito contraseña -->
+				<i id="eye" class="<%= faSolid %>fa-eye-slash"></i>
+			<% } %>
+			<!-- Error/OK -->
+			<%- include("MN-Errores", {nombre}) %>
+		</div>
+	<% } %>
+
+	<!--Credenciales Inválidas-->
+	<%- include("US-CredencsInvs") %>
+
+	<!--Iconos-->
+	<nav id="sectorIconos">
+		<!-- Submit -->
+		<button class="iconos" type="submit" tabindex="-1">
+			<i class="<%= iconos.check %>" title="Confirmar" autofocus tabindex="0"></i>
+		</button>
+		<% if (subTema == "login") { %>
+			<!-- Contraseña -->
+			<div class="iconos">
+				<i id="olvidoContr" class="<%= faSolid %>fa-key rojo" title="Generar una nueva contraseña"></i>
+			</div>
+		<% } %>
+	</nav>
+</form>

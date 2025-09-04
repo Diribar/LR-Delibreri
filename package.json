@@ -1,0 +1,28 @@
+{
+	"name": "0-demo",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"start": "cls && nodemon -e js app.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"async": "^3.2.6",
+		"bcryptjs": "^3.0.2",
+		"cookie-parser": "^1.4.7",
+		"ejs": "^3.1.10",
+		"exceljs": "^4.4.0",
+		"express": "^4.21.2",
+		"express-session": "^1.18.1",
+		"multer": "^1.4.5-lts.2",
+		"mysql2": "^3.14.1",
+		"nodemailer": "^6.10.1",
+		"sequelize": "^6.37.7"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.10"
+	}
+}

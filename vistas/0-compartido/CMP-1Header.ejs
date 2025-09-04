@@ -1,0 +1,64 @@
+<!-- Íconos de la izquierda -->
+<section id="izquierda">
+	<% if (locals.usuario && usuario.rol.cfg && usuario.statusReg_id == stDatosCompletados_id) { %>
+		<!-- Configuración -->
+		<div class="grupos ocultarEnMobile" tabindex="-1">
+			<i title="Configuración" id="configuracion" class="scale clickIcono iconoHeader <%= iconos.config %> <%= tema == 'configuración' && 'activo' %>"></i>
+			<%- include("HR-Config") %>
+		</div>
+	<% } %>
+	<% if (locals.usuario && CA_bloq) { %>
+		<!-- Menú para Mobile -->
+		<div id="mostrarMenuMobile" class="grupos">
+			<i class="<%= faSolid %>fa-bars iconoHeader"></i><!-- hay que agregarle clickIcono, cuando se implemente -->
+			<%-// include("HR4-MenuMobile") %>
+		</div>
+
+		<% if (usuario.rol.ca) { %>
+			<!-- Carga de archivos -->
+			<a href="/carga-archivos" class="grupos ocultarEnMobile" tabindex="-1">
+				<i title="Carga de archivos" id="cargaArchs" class="scale iconoHeader <%= iconos.cargaArchs %> <%= tema == 'cargaArchs' && 'activo' %>"></i>
+			</a>
+		<% } %>
+		<% if (usuario.rol.plr) { %>
+			<!-- Panel de Lenta Rotación -->
+			<a href="/" tabindex="-1" class="grupos ocultarEnMobile" tabindex="-1">
+				<i title="Panel de LR" id="panelLr" class="scale iconoHeader <%= iconos.panelControl %> <%= tema == 'panelLr' && 'activo' %>"></i>
+			</a>
+			<!-- Búsqueda rápida -->
+			<div id="busquedaRapida" class="grupos">
+				<i class="<%= faSolid %>fa-magnifying-glass scale iconoHeader ocultoMobileParado" title="Búsqueda rápida"></i><!-- hay que agregarle clickIcono, cuando se implemente -->
+				<%- //include("HR-BusqRapida") %>
+			</div>
+		<% } %>
+	<% } %>
+</section>
+
+<!-- Título del Encabezado -->
+<a href="/" id="tituloHeader" class="scaleCh" tabindex="-1">
+	<p>Lenta Rotación</p>
+</a>
+
+<!-- Íconos de la derecha -->
+<section id="derecha">
+	<% if (locals.usuario && usuario.rolFijo.cfg) { %>
+		<!-- Mostrar Roles -->
+		 <select name="rol">
+			<% const rolesFijos = roles.filter(n => ["soloLectura", "cargaArchs", "abmUsuarios"].includes(n.codigo) || n.id == usuario.rolFijo_id) %>
+			<% for (const rol of rolesFijos) { %>
+				<option value="<%= rol.id %>" <% if (rol.id == usuario.rol_id) { %>selected<% } %>><%= rol.nombre %></option>
+			<% } %>
+		 </select>
+	<% } %>
+	<% if (locals.usuario && usuario.rol.abm && CA_bloq) { %>
+		<!-- ABM de usuarios -->
+		<a href="/abm-usuarios" class="grupos ocultarEnMobile" tabindex="-1">
+			<i title="ABM de usuarios" id="abmUsuarios" class="scale iconoHeader <%= iconos.abmUsers %> <%= tema == 'abmUsuarios' && 'activo' %>"></i>
+		</a>
+	<% } %>
+	<!-- Usuarios -->
+	<div id="usuarios" class="grupos scale" <% if (locals.usuario) { %>title="Hola <%= usuario.apodo %>"<% } %>>
+		<%- include("HR-Usuarios") %>
+	</div>
+
+</section>

@@ -1,0 +1,92 @@
+<!-- Stock 123 -->
+<div>
+	<h2 class="">Stock de LR Inicial</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Inicial</th>
+				<th>Actual</th>
+				<th>Δ</th>
+				<th>%</th>
+				<th>Proy.</th>
+				<th>Δ</th>
+				<th>%</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><%= comp.moneda(valorLr123Inicial) %></td>
+				<!-- Actual -->
+				<td><%= comp.moneda(valorLr123Actual) %></td>
+				<td>-<%= comp.moneda(valorLr123Actual - valorLr123Inicial) %></td>
+				<td><%= compLr123ActualLr123Inicial %>%</td>
+				<!-- Proyectada -->
+				<td><%= comp.moneda(valorLr123Proy) %></td>
+				<td>+<%= comp.moneda(valorLr123Inicial - valorLr123Proy) %></td>
+				<td><%= compLr123ProyLr123Inicial %>%</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<!-- Stock 0 -->
+<div>
+	<h2 class="">Stock de Riesgo Inicial</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Inicial</th>
+				<th>Actual</th>
+				<th>Δ</th>
+				<th>%</th>
+				<th>Proy.</th>
+				<th>Δ</th>
+				<th>%</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><%= comp.moneda(valorLr0Inicial) %></td>
+				<!-- Actual -->
+				<td><%= comp.moneda(valorLr0Actual) %></td>
+				<td>-<%= comp.moneda(valorLr0Inicial - valorLr0Actual) %></td>
+				<td><%= compLr0ActualLr0Inicial %>%</td>
+				<!-- Proyectada -->
+				<td><%= comp.moneda(valorLr0Proy) %></td>
+				<td>-<%= comp.moneda(valorLr0Inicial - valorLr0Proy) %></td>
+				<td><%= compLr0ProyLr0Inicial %>%</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<!-- Stock Total -->
+<div>
+	<h2 class="">Stock Total Inicial</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Inicial</th>
+				<th>Actual</th>
+				<th>Δ</th>
+				<th>%</th>
+				<th>Proy.</th>
+				<th>Δ</th>
+				<th>%</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr id="total">
+				<td><%= comp.moneda(valorLrInicial) %></td>
+				<!-- Actual -->
+				<td><%= comp.moneda(valorLrActual) %></td>
+				<td><%= comp.moneda(valorLrActual - valorLrInicial) %></td>
+				<td><%= compLrActualLrInicial %>%</td>
+				<!-- Proyectada -->
+				<td><%= comp.moneda(valorLrProy) %></td>
+				<td><%= comp.moneda(valorLrInicial - valorLrProy) %></td>
+				<td ><%= compLrProyLrInicial %>%</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

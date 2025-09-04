@@ -1,0 +1,9 @@
+<% if (!locals.usuario) { %>
+    <a href="/usuarios/login">
+        <i class="fa-regular fa-circle-user iconoHeader <%= tema == 'usuarios' && 'activo' %>" title="Login"></i>
+    </a>
+<% } else { %>
+    <a href="/usuarios/logout">
+        <i class="<%= iconos.usuario %> iconoHeader"></i>
+    </a>
+<% } %>

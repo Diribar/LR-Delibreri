@@ -1,0 +1,188 @@
+<form>
+	<!-- Gráficos orientativos -->
+	<section id="graficosOrientativos">
+		<div id="tituloFiltro">
+			<i class="<%= iconos.vCorta %> vCorta"></i>
+			<h1>Graficos Orientativos</h1>
+		</div>
+		<div id="graficos" class="seccion">
+			<!-- Gráfico Inicial vs Actual -->
+			<div id="inicialActual" class="graficoSelect">
+				<div class="grafico"></div>
+				<label class="flexRowAlign">
+					<i class="fa-solid fa-filter-circle-xmark" title="Quitar filtros"></i>
+					<input name="sinPFA" type="checkbox" class="ocultar">
+				</label>
+			</div>
+		<!-- Demás gráficos -->
+		<% const tema = [" proveedor", "a familia", " ejercicio"] %>
+		<% ["proveedor_id", "familia_id", "ejercicio_id"].forEach((campo, i) => { %>
+			<div id="<%= campo %>" class="graficoSelect">
+				<div class="grafico"></div>
+				<select name="<%= campo %>">
+					<option value="" data-tema="elegi">Elegí un<%= tema[i] %></option>
+					<option value="" data-tema="sinFiltro" class="sinFiltro">Sin filtro</option>
+					<option data-tema="estandar"></option>
+					<% if (campo == "ejercicio_id") { %><option value="123">Ejercs &lt; 0</option><% } %>
+				</select>
+			</div>
+		<% }) %>
+		</div>
+	</section>
+
+	<!-- Productos -->
+	<section id="tablaProds">
+		<div id="tituloFiltro">
+			<i class="<%= iconos.vCorta %> vCorta"></i>
+			<h1>Productos</h1>
+			<select name="filtroPlanAccion_id">
+				<optgroup label="Especiales">
+					<option value="">Filtro por Plan de Acción</option>
+					<option value="" class="sinFiltro">Sin filtro</option>
+					<option value="sinPlan">Sin plan de acción</option>
+					<option value="algunPlan">Algún plan de acción</option>
+				</optgroup>
+				<optgroup label="Personalizados">
+					<option value=""></option>
+				</optgroup>
+			</select>
+			<label>
+				<i class="<%= iconos.rotar %>" title="Actualizar"></i>
+				<input name="actualizaPlan" type="checkbox" class="ocultar">
+			</label>
+			<label>
+				<i class="fa-solid fa-filter-circle-xmark" title="Quitar filtros"></i>
+				<input name="sinPlan" type="checkbox" class="ocultar">
+			</label>
+			<label>
+				<i class="fa-solid fa-download" title="Descargar"></i>
+				<input name="descargar" type="checkbox" class="ocultar">
+			</label>
+		</div>
+		<table class="seccion">
+			<thead>
+				<tr>
+					<th class="izq">Código</th>
+					<th class="izq">Descripción</th>
+					<th class="der">Cant.</th>
+					<th class="der">Costo</th>
+					<th class="der">Valor</th>
+					<th class="izq">Plan de Acción</th>
+					<th class="izq">Proveedor</th>
+					<th class="izq">Familia</th>
+					<th class="centro">Últ. ingr.</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="ocultar">
+					<!-- Código -->
+					<td class="izq"></td>
+					<!-- Descripción -->
+					<td class="izq"></td>
+					<!-- Cant. -->
+					<td class="der"></td>
+					<!-- Costo -->
+					<td class="der pesos"></td>
+					<!-- Valor -->
+					<td class="der pesos"></td>
+					<!-- Plan de acción -->
+					<td class="izq">
+						<select name="edicionPlan_id" data-prod_id="">
+							<option value="sinPlan">Sin plan de acción</option>
+							<option value=""></option>
+						</select>
+					</td>
+					<!-- Proveedor -->
+					<td class="izq"></td>
+					<!-- Familia -->
+					<td class="izq"></td>
+					<!-- Últ. ingr. -->
+					<td class="centro"></td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<!-- Planes de Acción -->
+	<section id="tablaPlanesAccion">
+		<div id="tituloFiltro">
+			<i class="<%= iconos.vCorta %> vCorta"></i>
+			<h1>Planes de Acción</h1>
+			<select name="filtroResp_id">
+				<option value="">Filtro por Responsable</option>
+				<option value="" class="sinFiltro">Sin filtro</option>
+				<% for (const responsable of responsables) { %>
+					<option value="<%= responsable.id %>"><%= responsable.apodo %></option>
+				<% } %>
+			</select>
+			<select name="filtroEstado">
+				<option value="">Filtro por Abiertos/Cerrados</option>
+				<option value="" class="sinFiltro">Sin filtro</option>
+				<option value="abiertos" selected>Abiertos</option>
+				<option value="cerrados">Cerrados</option>
+			</select>
+		</div>
+		<table class="seccion">
+			<thead>
+				<tr>
+					<th class="izq">Nombre del Plan</th>
+					<th class="izq">Responsable</th>
+					<th class="der">Valor Actual</th>
+					<th class="der">Mejora</th>
+					<th class="der">%</th>
+					<th class="centro">Abierto en</th>
+					<th class="izq">Abierto por</th>
+					<th class="centro">Cerrado en</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- Listado -->
+				<tr class="planes">
+					<!-- Nombre del Plan -->
+					<td class="izq">
+						<input name="cambioNombrePlan" type="text" placeholder="" class="izq">
+					</td>
+					<!-- Responsable -->
+					<td class="izq">
+						<select name="cambioResp_id">
+							<% for (const responsable of responsables) { %>
+								<option value="<%= responsable.id %>" class="<%- !responsable.aptoPlanAccion ? 'ocultar' : '' %>"><%= responsable.apodo %></option>
+							<% } %>
+						</select>
+					</td>
+					<!-- Valor Actual -->
+					<td class="der pesos"></td>
+					<!-- Mejora -->
+					<td class="der pesos"></td>
+					<td class="der"></td><!-- % -->
+					<!-- Abierto en -->
+					<td class="centro"></td>
+					<!-- Abierto por -->
+					<td class="izq"></td>
+					<!-- Cerrado en -->
+					<td class="centro"></td>
+					<!-- Cerrar/Eliminar -->
+					<td><label><input name="cierraElimina" type="checkbox" class="ocultar"></label></td>
+				</tr>
+				<!-- Nuevo plan -->
+				<tr id="nuevoPlan">
+					<!-- Nombre del Plan -->
+					<td class="izq">
+						<input name="nombrePlan" type="text" placeholder="Nuevo Plan de Acción" class="izq">
+					</td>
+					<!-- Responsable -->
+					<td class="izq">
+						<select name="responsable_id">
+							<option value="" class="ocultar">Elejí un responsable</option>
+							<% for (const responsable of responsables) { %>
+								<option value="<%= responsable.id %>"><%= responsable.apodo %></option>
+							<% } %>
+						</select>
+					</td>
+					<!-- Cerrar -->
+					<td><label>💾<input name="nuevoPlan" type="checkbox" class="ocultar"></label></td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+</form>

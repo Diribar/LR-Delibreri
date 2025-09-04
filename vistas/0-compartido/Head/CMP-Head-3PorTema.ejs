@@ -1,0 +1,12 @@
+<!-- Heads personalizados -->
+<% const {tema} = locals %>
+<% if (false) { %>
+<% } else if (tema == "usuarios") { %><%- include("US-1Head") %>
+<% } else { %>
+	<link rel="stylesheet" href="/formatos/0-compartido/Main/MN-Marcos.css">
+	<% if (false) { %>
+	<% } else if (tema == "configuración") { %><%- include("CFG-0Head") %>
+	<% } else if (tema == "cargaArchs") { %><%- include("CA-0Head") %>
+	<% } else if (tema == "panelLr") { %><%- include("PLR-0Head") %>
+	<% } %>
+<% } %>

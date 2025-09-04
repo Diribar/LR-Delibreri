@@ -1,0 +1,28 @@
+:root {
+	/* Claros */
+	--amarilloClaro:rgb(255, 242, 204);
+	--celesteClaro: rgb(220, 230, 242);
+	--grisClaro: rgb(242, 242, 242);
+	--naranjaClaro: rgb(255, 204, 153);
+	--verdeClaro: rgb(158, 203, 127);
+
+	/* Intermedios */
+	--amarilloInterm: #fcff82;
+	--grisInterm: rgb(200, 200, 200);
+	--verdeInterm: rgb(84, 130, 53);
+	--marronInterm: rgb(198, 81, 0); /* rgb(160, 80, 0); */
+	--rojoInterm: rgb(200, 0, 0);
+
+	/* Oscuros */
+	--amarilloOscuro: rgb(255, 230, 153);
+	--celesteOscuro: #C7D7EA;
+	--grisOscuro: rgb(100, 100, 100);
+	--grisMasOscuro: rgb(80, 80, 80);
+	--azulOscuro: rgb(37, 64, 97);
+	--azulFrances: rgb(31, 73, 125);
+	--naranjaOscuro: rgb(237, 125, 49);
+	--rojoOscuro: firebrick;
+	--verdeOscuro:rgb(56, 87, 35);
+	--verdeIngles: #009879;
+	--marron: rgb(132, 60, 12);
+}

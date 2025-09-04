@@ -1,0 +1,6 @@
+/* Acostado */
+@media (orientation: landscape) and (height <= 600px) {
+	#cuerpo #dataEntry {max-height: 100%;}
+	#dataEntry form .iconos {margin: 0 auto;}
+	#dataEntry form h1 {margin: 0;}
+}

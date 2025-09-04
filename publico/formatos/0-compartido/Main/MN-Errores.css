@@ -1,0 +1,26 @@
+.inputError {
+	position: relative;
+	.errores {
+		line-height: 1rem; font-size: 1rem;
+		position: absolute; right: -5px; top: 50%; translate: 100% -50%;
+		.fa-circle-check, .fa-circle-xmark {border-width: 1px; border-style: solid;}
+		.fa-circle-check {cursor: default;}
+		.fa-circle-xmark {
+			position: relative; cursor: pointer;
+			/* Hover */
+			&:hover .mensajeError {display: inline;}
+			.mensajeError {
+				width: max-content; max-width: min(250px, 90vw); border-radius: 8px;
+				font-weight: normal; line-height: 1.2rem; padding: 3px 7px; text-align: left; text-wrap: wrap;
+				right: -5px; translate: 100% -50%;
+				display: none; background: var(--backMensajeError);
+				&, &::before {position: absolute; top: 50%; cursor: default;}
+				&::before {
+					border: solid 5px; content: ""; scale: 1.1;
+					left: 0px; translate: -100% -50%; scale: 1.1;
+					border-color: transparent var(--colorMensajeError) transparent transparent;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,67 @@
+<table id="archsInput" class="tabla">
+	<thead>
+		<tr class="lectura">
+			<th hidden>id</th>
+			<th class="izq anchoMedio">Tipo de Archivo</th>
+			<th class="izq anchoLargo">Texto Distintivo</th>
+			<th class="centro anchoMedio">Columna</th>
+			<th class="centro">Fila</th>
+			<th class="centro">Fila Encab.</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% let pintar = false %>
+		<% for (const archCabecera of archsCabecera) { %>
+			<!-- Lectura y eliminar -->
+			<tr class="lectura <%- pintar ? 'pintar' : '' %>">
+				<td hidden><%= archCabecera.id %></td>
+				<td class="izq anchoMedio"><%= archCabecera.tipoTabla.descripcion %></td>
+				<td class="izq anchoLargo"><%= archCabecera.distintTexto %></td>
+				<td class="centro anchoMedio"><%= archCabecera.distintCol %></td>
+				<td class="centro"><%= archCabecera.distintFila %></td>
+				<td class="centro"><%= archCabecera.filaEncab %></td>
+				<td class="iconos">
+					<i class="<%= iconos.edicion %> edicion"></i>
+					<i class="<%= iconos.eliminar %> eliminar"></i>
+				</td>
+			</tr>
+			<!-- Edición -->
+			<tr class="edicion ocultar <%= pintar ? 'pintar' : '' %>">
+				<td hidden></td>
+				<td class="izq anchoMedio">
+					<select name="tipoTabla_id" class="izq">
+						<% for (const tipoTablaCabecera of tiposTablaCabecera) { %>
+							<option value="<%= tipoTablaCabecera.id %>" <% if (tipoTablaCabecera.id == archCabecera.tipoTabla_id) { %>selected<% } %>><%= tipoTablaCabecera.descripcion %></option>
+						<% } %>
+					</select>
+				</td>
+				<td class="izq anchoLargo"><input name="distintTexto" type="text" value="<%= archCabecera.distintTexto %>" class="izq"></td>
+				<td class="centro anchoMedio"><input name="distintCol" type="text" value="<%= archCabecera.distintCol %>" class="centro"></td>
+				<td class="centro"><input name="distintFila" type="number" value="<%= archCabecera.distintFila %>" class="centro"></td>
+				<td class="centro"><input name="filaEncab" type="number" value="<%= archCabecera.filaEncab %>" class="centro"></td>
+				<td class="iconos">
+					<i class="<%= iconos.derecha %> salir"></i>
+					<i class="<%= iconos.guardar %> actualizar inactivo"></i>
+				</td>
+			</tr>
+			<% pintar = !pintar %>
+		<% } %>
+		<!-- Agrega un registro -->
+		<tr class="agrega">
+			<td class="ocultar"></td>
+			<td class="izq anchoMedio">
+				<select name="tipoTabla_id" class="izq">
+					<option value="">Elegí</option>
+					<% for (const tipoTablaCabecera of tiposTablaCabecera) { %>
+						<option value="<%= tipoTablaCabecera.id %>"><%= tipoTablaCabecera.descripcion %></option>
+					<% } %>
+				</select>
+			</td>
+			<td class="izq anchoLargo"><input name="distintTexto" type="text" placeholder="escribilo" class="izq"></td>
+			<td class="centro anchoMedio"><input name="distintCol" type="text" placeholder="?" class="centro"></td>
+			<td class="centro"><input name="distintFila" type="number" placeholder="?" class="centro"></td>
+			<td class="centro"><input name="filaEncab" type="number" placeholder="?" class="centro"></td>
+			<td class="iconos"><i class="<%= iconos.agregar %>"></i></td>
+		</tr>
+	</tbody>
+</table>

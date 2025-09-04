@@ -1,0 +1,6 @@
+#etiquetas .etiqueta {
+	padding: 5px 10px; cursor: pointer;
+	border: 1px solid var(--azulOscuro); border-bottom: none; border-radius: 5px 5px 0px 0px;
+	background-color: var(--celesteOscuro); color: var(--azulOscuro);
+	&.activo {background-color: var(--azulOscuro); color: var(--grisClaro); font-weight: bold;}
+}

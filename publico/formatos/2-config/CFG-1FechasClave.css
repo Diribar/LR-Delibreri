@@ -1,0 +1,12 @@
+#marcoChico #fechasClave {
+	display: flex; flex-direction: column;
+	#izquierda {
+		display: flex; flex-direction: column;
+		width: fit-content;
+		label, p {&:not(:last-child) {margin-right: 10px;}}
+		label {
+			input, select {border-radius: 5px; border-width: 1px;}
+			input {text-align: center;}
+		}
+	}
+}

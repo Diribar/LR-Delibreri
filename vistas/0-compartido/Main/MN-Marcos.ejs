@@ -1,0 +1,26 @@
+<section id="marcoGrande">
+	<div id="tituloPrincipal" class="textoConSombra">
+		<%= titulo %>
+	</div>
+	<% if (tema == "panelLr") { %>
+		<nav id="etiquetas" class="flexRowAlign">
+			<% for (const tipoGraf of tiposGraficos) { %>
+				<div id="<%= tipoGraf.id %>" class="etiqueta <%- tipoGraf.id == etiqActiva ? 'activo' : '' %>"><%= tipoGraf.etiqueta %></div>
+			<% } %>
+		</nav>
+	<% } %>
+	<div id="marcoChico">
+		<% if (locals.subTitulo) { %><div id="tituloSecundario"><%= subTitulo %></div><% } %>
+		<% if (false) { %>
+		<% } else if (tema == "configuración") { %>
+			<% if (false) { %>
+			<% } else if (subTema == "fechasClave") { %><%- FC_bloq ? include("CFG-1FC-Mostrar") : include("CFG-1FC-Input") %>
+			<% } else if (["maestroMovs", "maestroDeps"].includes(subTema)) { %><%- include("CFG-2Maestros") %>
+			<% } else if (subTema == "archsInput") { %><%- include("CFG-3ArchsInput") %>
+			<% } else if (subTema == "cargaArchs") { %><%- include("MN-CargaArchs") %>
+			<% } %>
+		<% } else if (tema == "cargaArchs") { %><%- include("MN-CargaArchs") %>
+		<% } else if (tema == "panelLr") { %><%- include("PLR-1Cuerpo") %>
+		<% } %>
+	</div>
+</section>

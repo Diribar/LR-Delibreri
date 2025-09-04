@@ -1,0 +1,41 @@
+/* Flexbox */
+.flexCol {display: flex; flex-direction: column;}
+.flexRow {display: flex; flex-direction: row;}
+.flexRowReverse {display: flex; flex-direction: row-reverse;}
+.flexRowAlign {display: flex; flex-direction: row; align-items: center;}
+.flexColAlign {display: flex; flex-direction: column; align-items: center;}
+.grow {flex-grow: 1;}
+.spaceBetween {justify-content: space-between;}
+.spaceAround {justify-content: space-around;}
+.spaceEvenly {justify-content: space-evenly;}
+
+/* Íconos clave */
+.fa-solid {line-height: 1;}
+.fa-circle-check, .fa-circle-xmark, .fa-circle-left,
+.fa-circle-right {background: var(--backIcono); border-color: var(--backIcono); border-radius: 50%;}
+.fa-circle-check, .fa-circle-plus {color: var(--verdeOscuro);}
+.fa-circle-xmark, .fa-trash-can {color: var(--rojoOscuro);}
+
+/* Inactivo */
+.inactivo, .inactivoVersion {opacity: .65 !important;}
+.inactivo, .inactivo *, .inactivoVersion, button:has(.inactivo, .inactivoVersion) {cursor: not-allowed !important;}
+
+/* Maneras de Ocultar */
+.ocultar, .ocultaInactivo, .ocultaTipo, .ocultaOK_imagen, .ocultaAvatar,
+.ocultaCfc, .ocultaOcurrio, .ocultaFiltros, .ocultaFiltro {display: none !important}
+.invisible {visibility: hidden;}
+
+/* Otras */
+.bordeRojo {border: 2px solid var(--rojoOscuro);}
+.absolute {position: absolute}
+.absoluteCentro {position: absolute; top: 50%; left: 50%; translate: -50% -50%;}
+.relative {position: relative;}
+.pointer {cursor: pointer;}
+.rojo {color: var(--rojoOscuro);}
+.verde {color: var(--verdeOscuro);}
+.negrita {font-weight: bold;}
+.bloqueado {background: var(--celesteOscuro);}
+.bordeConSombra {box-shadow: 0px 0px 10px rgb(100 100 100)}
+.textoConSombra {text-shadow: 1.1px 1.1px 0px rgba(0, 0, 0, 0.5)}
+.girar90 {rotate: 90deg;}
+.selectSinFlecha {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}

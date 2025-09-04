@@ -1,0 +1,31 @@
+#porAntig #informacion #texto {
+	& > div {
+		&:nth-child(n+2) {margin-top: 20px;}
+
+		/* Título */
+		h2 {align-self: flex-start; margin-bottom: 2px;}
+
+		/* Tablas */
+		table {
+			border-collapse: collapse; border-radius: 10px; overflow: hidden; border: 1px solid #888;
+			font-size: 1.1rem;
+			th, td {border: 1px solid #888; padding: 6px;}
+			th {background-color: #6d88a0; color: white; font-weight: bold; border-bottom: 2px solid var(--grisOscuro);}
+			tr {
+				background-color: #d6dce2;
+
+				/* Todos menos la primera columna */
+				td:nth-child(4) {border-left: solid 2px var(--grisOscuro); border-right: solid 2px var(--grisOscuro);}
+
+			}
+			/* Tabla de totales */
+		}
+		&:last-child table tr {
+			background-color: #bfc6ce; font-weight: bold;
+			border-top: 2px solid var(--grisOscuro);
+			td.rojo {background-color: var(--rojoOscuro); color: white;}
+			td.verde {background-color: var(--verdeOscuro); color: white;}
+		}
+	}
+
+}

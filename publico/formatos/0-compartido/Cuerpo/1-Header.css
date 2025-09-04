@@ -1,0 +1,21 @@
+/* Configuración general */
+header {
+	width: 100vw; height: var(--altoHeader); position: relative;
+	background: var(--azulOscuro); justify-content: space-between;
+	section {margin: 0 15px;}
+	#tituloHeader {
+		position: absolute; left: 50%; top: 50%; translate: -50% -45%; text-wrap: nowrap;
+		p {
+			font-family: "Calibri";
+			color: var(--amarilloClaro); font-size: 2.5rem; font-weight: bold;
+		}
+	}
+	a {display: block;}
+	select {
+		appearance: none;
+		padding-block: 5px; border-radius: 12px; padding-inline: 6px 8px;
+		background-color: var(--celesteClaro); color: var(--azulOscuro); font-weight: bold;
+		text-align: center;
+	}
+}
+header, header section {display: flex; flex-direction: row; align-items: center;}

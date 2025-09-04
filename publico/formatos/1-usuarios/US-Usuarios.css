@@ -1,0 +1,89 @@
+#cartelMailExitoso {
+	cursor: pointer; background: var(--verdeOscuro);
+
+	/* Mensajes */
+	#contenedorMensajes {
+		overflow-y: auto; scrollbar-width: none;
+		max-height: calc(var(--alturaViewPort) * 0.5);
+			/* Mensajes */
+			#mensajes {
+				margin-inline: 20px;
+				& > li {
+					font-size: 1.2rem;
+					&:nth-child(n+2) {margin-top: 6px;}
+				}
+				li {
+					text-align: left; line-height: 1.2; color: var(--celesteClaro);
+					& :is(ul, ol) {
+						padding-left: 10px;
+						li {font-size: 1.15rem; margin-top: 3px;}
+					}
+					& em {color: snow;}
+					& > i {
+						font-size: 1rem; line-height: normal; margin-right: 10px;
+						&.fa-circle {border: solid 1px transparent;}
+						&.fa-solid.fa-circle {color: var(--amarilloOscuro);}
+					}
+				}
+				span {font-weight: bold; font-style: italic;}
+			}
+	}
+
+	/* Botones 'Cancelar', 'Entendido' y 'Continuar' */
+	#iconosCartel i {
+		font-size: 2rem; color: var(--amarilloOscuro); border-radius: 50%;
+		&:focus {outline: none;}
+	}
+
+}
+#form {
+	display: flex; flex-direction: column;
+	background-color: rgba(255, 242, 204, 0.7);
+	max-height: 95%; padding: 20px 40px; border-radius: 10px;
+	#tituloPrincipal {
+		margin-block: 0 5px; text-align: center; font-size: 1.75rem;
+		color: var(--verdeOscuro); font-weight: bold;
+	}
+	.inputError {
+		margin-top: 20px; position: relative;
+		.input {width: 200px; height: 27px; border: none; border-radius: 15px; padding: 3px 10px; text-align: center;}
+		#eye {right: 10px; position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+	}
+	#credenciales {
+		align-self: center; margin-top: 20px;
+		.mensajeError {
+			color: var(--colorMensajeError); background: var(--backMensajeError);
+			padding: 7px 10px; border-radius: 8px;
+			text-align: center;
+		}
+	}
+	#sectorIconos {
+		display: flex; flex-direction: row; justify-content: space-around;
+		margin-block: 20px 10px;
+		button {background-color: transparent; border: none;}
+		i {font-size: 1.75rem; cursor: pointer;}
+	}
+}
+
+/* Acostado */
+@media (orientation: landscape) and (width > 1250px) {
+	#cartelMailExitoso {
+		#check {margin-block: 20px;}
+		#iconosCartel {margin-top: 25px;}
+	}
+}
+@media (orientation: landscape) and (width <= 1250px) {
+	#cartelMailExitoso {
+		&:has(#contenedorMensajes:not(:empty)) #check {display: none;}
+		#contenedorMensajes {padding: 0;}
+		#iconosCartel {margin-top: 5px;}
+	}
+}
+
+/* Parado */
+@media (orientation: portrait) {
+	#cartelMailExitoso {
+		&:has(#contenedorMensajes:not(:empty)) #check {margin-bottom: 20px;}
+		#iconosCartel {margin-top: 25px;}
+	}
+}

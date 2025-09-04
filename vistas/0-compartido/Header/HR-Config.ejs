@@ -1,0 +1,9 @@
+<!-- Menú de configuración -->
+<div id="menuConfig" class="clickVista menuForm menuFondo menuIzquierda <%= CA_bloq && 'ocultar' %>">
+	<% for (let menu of menuConfig) { %>
+		<% if (menu.hr) { %><hr><% } %>
+		<% if (menu.sinFcBloq && FC_bloq || menu.conFcBloq && !FC_bloq) { continue; } %>
+		<% if (menu.sinCaBloq && CA_bloq || menu.conCaBloq && !CA_bloq) { continue; } %>
+		<a href="/configuracion/<%= menu.href %>" class="menuOpcion"><%= menu.titulo %></a>
+	<% } %>
+</div>

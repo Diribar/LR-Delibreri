@@ -1,0 +1,45 @@
+table.tabla {
+	/* Encabezado y todo el body */
+	border-collapse: collapse;
+	.izq {
+		text-align: left;
+		&.anchoCorto {width: 100px;}
+		&.anchoMedio {width: 150px;}
+		&.anchoLargo {width: 200px;}
+	}
+	.centro {
+		text-align: center; width: 56px;
+		&.anchoMedio {width: 72px;}
+		&.anchoLargo {width: 100px;}
+	}
+
+	/* Temas comunes entre el encabezado, y partes del body */
+	thead tr th, tbody :is(.lectura td, .edicion td.iconos) {padding-inline: 8px;}
+
+	/* Encabezado */
+	thead tr th {background-color: var(--verdeOscuro); color: var(--celesteClaro); padding-block: 3px;}
+
+	/* Body */
+	tbody tr {
+		&:is(.lectura, .edicion) {
+			&.pintar :is(td:not(.iconos), td select, td input) {background-color: var(--celesteClaro);}
+			td.iconos {background-color: transparent;}
+		}
+		&.edicion td, &.agrega td {
+			padding-inline: 1px;
+			input {padding-inline: 5px;}
+			input, select {width: 100%; border: 1px solid var(--grisOscuro); background-color: transparent; height: 21px;}
+			select[name="tipoTabla_id"] {padding-left: 3px;}
+		}
+		&.lectura td {padding-block: 3px;}
+		td.tapar {background-color: var(--grisInterm) !important;}
+		td.iconos {
+			text-align: center;
+			i {
+				cursor: pointer;
+				&:not(.fa-trash-can, .fa-circle-plus) {color: var(--azulOscuro);}
+				&:not(:first-of-type) {margin-left: 15px;}
+			}
+		}
+	}
+}

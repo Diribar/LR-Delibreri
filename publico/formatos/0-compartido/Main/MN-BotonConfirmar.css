@@ -1,0 +1,12 @@
+#marcoChico {
+	button {
+		align-self: center; border-radius: 15px; border: none;
+		margin-top: 20px; padding: 10px 15px ;
+		color: white; font-size: 1.15rem;
+		font-weight: bold;
+		cursor: pointer;
+		&:hover {scale: 1.15;}
+		&.verde {background-color: var(--verdeOscuro);}
+		&.rojo {background-color: var(--rojoOscuro);}
+	}
+}

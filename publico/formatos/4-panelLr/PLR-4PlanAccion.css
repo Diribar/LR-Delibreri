@@ -1,0 +1,39 @@
+#marcoChico .zonaPanel #informacion:has(form) {
+	overflow-y: auto; padding-left: 20px;
+	&, form {display: flex; flex-direction: column; align-items: flex-start;}
+	form {
+		& > section {
+			margin-block: 10px 10px;
+			#tituloFiltro {
+				display: flex; flex-direction: row; align-items: center; position: relative;
+				> * {margin-right: 10px;}
+				.vCorta {
+					margin-right: 0px; cursor: pointer;
+					position: absolute; left: -5px; top: 50%; translate: -100% -50%;
+					&:hover {scale: 1.5;}
+				}
+				h1 {margin-block: 0px;}
+			}
+			select:not(:has(option[value=""]:checked)) option.sinFiltro {
+				display: block; font-style: italic; background-color: var(--grisInterm);
+			}
+		}
+		label {
+			cursor: pointer;
+			&:hover {scale: 1.5;}
+		}
+		td label {display:inline-block;}
+		#graficosOrientativos {
+			#graficos {
+				display: flex !important; flex-direction: row;
+				&.ocultar .graficoSelect .grafico {display: none;}
+			}
+			.graficoSelect {
+				width: 250px; padding-inline: 5px;
+				display: flex; flex-direction: column; align-items: center;
+				select {width: 100%;}
+				label {align-self: flex-end; flex-grow: 1;}
+			}
+		}
+	}
+}

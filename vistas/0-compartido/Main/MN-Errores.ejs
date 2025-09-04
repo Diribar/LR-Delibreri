@@ -1,0 +1,16 @@
+<div id="<%= locals.nombre %>" class="errores" >
+	<!-- Errores -->
+	<i
+		class="<%= iconos.xMark %><%- !locals.errores || locals.nombre && !errores[nombre] ? ' ocultar' : '' %>"
+		<% if (locals.z_index) { %>style="z-index: <%= z_index %> "<% } %>
+	>
+		<span class="mensajeError bordeRojo"><%- locals.nombre && locals.errores && errores[nombre] || !locals.nombre && locals.errores || "" %></span>
+	</i>
+
+	<!-- OK -->
+	<i
+		class="<%= iconos.check %><%- (locals.nombre && (locals.dataEntry && !dataEntry[nombre] || locals.errores && errores[nombre]) || !locals.nombre && locals.errores) ? ' ocultar' : '' %>"
+		<% if (locals.ocultarOK) { %>style="display: none;"<% } %>
+	>
+	</i>
+</div>

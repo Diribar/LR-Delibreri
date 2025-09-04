@@ -1,0 +1,14 @@
+#dropArea {
+	border: 2px dashed var(--grisOscuro); border-radius: 5px;
+	display: flex; flex-direction: column; align-items: center; justify-content: center;
+	width: 200px; height: 150px; margin-bottom: 10px;
+	background-color: var(--celesteClaro);
+	h1 {margin: 0; text-align: center;}
+	button {
+		margin-top: 20px; cursor: pointer; padding: 2px 5px;
+		border-radius: 5px;
+		font-size: 1.1rem; font-weight: bold;
+		background-color: var(--grisOscuro); color: var(--grisClaro);
+	}
+	&.activo {background-color: var(--grisInterm);}
+}

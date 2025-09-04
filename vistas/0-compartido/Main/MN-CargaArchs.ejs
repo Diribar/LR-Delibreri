@@ -1,0 +1,95 @@
+<section id="cargaArchs">
+	<% const input = tema == "configuración" && cfgInput || tema == "cargaArchs"; %>
+	<div id="izquierda" <% if (!input) { %>class="ocultar"<% } %>>
+		<div id="dropArea">
+			<h1>Arrastrá el<br>archivo hasta acá</h1>
+			<button>Buscá tu archivo</button>
+			<input type="file" hidden>
+		</div>
+		<div id="statusArch"></div>
+	</div>
+	<div id="derecha">
+		<table class="tabla">
+			<thead class="lectura">
+				<tr>
+					<th class="izq">Tipo de Archivo</th>
+					<% if (input) { %>
+						<th class="centro">Resultado</th>
+					<% } %>
+					<th class="centro anchoMedio">Desde</th>
+					<th class="centro anchoMedio">Hasta</th>
+					<th class="centro anchoLargo">Actualiz. en</th>
+					<th class="izq">Actualiz. por</th>
+					<% if (input) { %>
+						<th class="izq">Acción</th>
+					<% } %>
+				</tr>
+			</thead>
+			<tbody>
+				<% let pintar = false %>
+				<% for (let registro of regsPanel) { %>
+					<tr class="lectura <%- pintar ? 'pintar' : '' %>">
+						<!-- Nombre de la tabla -->
+						<td id="<%= registro.nombreTablaRegs %>" class="izq nombreTablaRegs"><%= registro.descripcion %></td>
+
+						<!-- Resultado -->
+						<% if (input) { %>
+							<td id="resultadoBe" class="centro pointer" title="<%= mensajesCA[registro.icono] %>"><%= registro.icono %></td>
+						<% } %>
+
+						<!-- Desde -->
+						<% let desde = registro.tipoTabla.conDesde && registro.desde; %>
+						<% if (desde) {desde = comp.fechas["d/mmm/aa"](desde)}; %>
+						<td id="desde" class="centro <%- !registro.tipoTabla.conDesde ? 'tapar' : '' %>"><%= registro.tipoTabla.conDesde ? (desde || '-') : '' %></td>
+
+						<!-- Hasta -->
+						<% let hasta = registro.tipoTabla.conHasta && registro.hasta; %>
+						<% if (hasta) {hasta = comp.fechas["d/mmm/aa"](hasta)}; %>
+						<td id="hasta" class="centro <%- !registro.tipoTabla.conHasta ? 'tapar' : '' %>"><%= registro.tipoTabla.conHasta ? (hasta || '-') : '' %></td>
+
+						<!-- Actualizado en -->
+						<% let {actualizadoEn} = registro; %>
+						<% if (actualizadoEn) {actualizadoEn = comp.fechas["d/mmm/aa"](actualizadoEn)}; %>
+						<td id="actualizadoEn" class="centro"><%= actualizadoEn || '-' %></td>
+
+						<!-- Actualizado por -->
+						<td id="actualizadoPor" class="izq"><%= registro.actualizadoPor && registro.actualizadoPor.nombreCompl || '-' %></td>
+
+						<!-- Acción -->
+						<% if (input) { %>
+							<% const {descarta, actualiza, elimina} = registro.tipoTabla %>
+							<td class="izq"><%= descarta ? "Descarta" : actualiza ? "Actualiza" : elimina ? "Elimina" : "" %> y agrega</td>
+						<% } %>
+					</tr>
+					<% pintar = !pintar %>
+				<% } %>
+			</tbody>
+		</table>
+		<% if (tema == "cargaArchs" || cfgInput) { %>
+			<ul id="mensajes">
+				<% if (tema == "configuracion") { %><li>Rango de fechas de los ejercicios anteriores: <%= fechasMovs.desde %> al <%= fechasMovs.hastaFin %></li><% } %>
+				<% if (tema == "cargaArchs") { %><li>Rango de fechas del ejercicio actual: <%= fechasMovs.desde %> al <%= fechasMovs.hastaFin %></li><% } %>
+				<li>Las fechas aceptadas para los movimientos son entre el <%= fechasMovs.desde %> y el <%= fechasMovs.hastaHoy %>.</li>
+				<li >Resultados posibles:</li>
+				<ul type="none">
+					<% for (icono in iconosCA) { %>
+						<% if (tema == "configuración" && icono == "actualiz" || tema == "cargaArchs" && icono == "conError") { continue; } %>
+						<li><%= iconosCA[icono] %> <%= mensajesCA[iconosCA[icono]] %></li>
+					<% } %>
+				</ul>
+				<li>Se puede descargar la información cargada, haciendo <em>click</em> sobre los íconos de la columna <em>Resultado</em></li>
+			</ul>
+
+		<% } %>
+		<form method="post" class="<%- ocultarBoton ? 'ocultar' : '' %>">
+			<% if (tema == "configuración") { %>
+				<button class="<%- cfgInput ? 'verde' : 'rojo' %>">
+					<%- cfgInput ? 'Confirmá y bloqueá' : 'Desbloqueá' %><br>
+					esta información
+				</button>
+			<% } else { %>
+				<button class="verde">Guardá esta<br>información</button>
+			<% } %>
+		</form>
+	</div>
+</section>

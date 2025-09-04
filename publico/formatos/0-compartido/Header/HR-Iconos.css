@@ -1,0 +1,13 @@
+/* Íconos */
+header {
+	section .grupos {
+		margin-inline: 12px; position: relative;
+		&.margenDerecho {margin-right: 40px;}
+		&#usuarios {border-radius: 50%; overflow: hidden;}
+		i.iconoHeader {
+			font-size: 1.8rem; line-height: normal; cursor: pointer;
+			color: var(--celesteClaro);
+			&.activo {color: var(--amarilloInterm);}
+		}
+	}
+}
