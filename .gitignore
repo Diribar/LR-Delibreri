@@ -2,6 +2,7 @@
 node_modules
 archsCliente
 baseDatos/varios/*.sql
+inputsDelCliente
 
 # Archivos
 ~*
