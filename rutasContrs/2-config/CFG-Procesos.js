@@ -298,7 +298,7 @@ module.exports = {
 							? {
 									...tablasOrigs.maestroProds.find((n) => n.codProd == codProd),
 									cantInicial: cantidad,
-									costoUnit: tablasOrigs.stock.find((n) => n.codProd == codProd).costoUnit,
+									// costoUnit: tablasOrigs.stock.find((n) => n.codProd == codProd).costoUnit,
 							  }
 							: {producto_id: i + 1, cantidad};
 
