@@ -23,11 +23,11 @@ app.use(cookies());
 
 // Variables que toman valores de 'path'
 const entProducc = global.path.basename(__dirname) == "1-Delibreri";
-const entPrueba = global.path.basename(__dirname) == "2-Prueba";
+const entPrueba = global.path.basename(__dirname) == "0-Prueba";
 const entDesarr = !entProducc && !entPrueba;
 
 // Listener - para conectarse con el servidor
-const puerto = entProducc ? 4203 : entPrueba ? 4207 : 3007;
+const puerto = entProducc ? 4205 : entPrueba ? 4202 : 3007;
 const carpCreds = "/archsCliente/0-credenciales";
 if (entDesarr) {
 	const https = require("https");
