@@ -15,6 +15,13 @@ module.exports = {
 		obtieneProductos: async (req, res) => {
 			// Variables
 			const {filtroPlanAccion_id, proveedor_id, familia_id, ejercicio_id} = req.cookies;
+			const referencia = ejercicio_id
+				? ejercicio_id == "123"
+					? "123"
+					: ejercicio_id == "23"
+					? "23"
+					: ejercicio_id - 1 // se le resta 1, porque el id de ej0 es 1
+				: "";// tiene que ser '', para que no afecte al filtro
 			let prodsTabla;
 
 			// Filtra los productos por prov, fam, antig
@@ -23,8 +30,8 @@ module.exports = {
 				baseDatos.obtieneTodos("maestroFams"),
 				baseDatos.obtieneTodos("stock", ["proveedor", "familia"]),
 			]);
-			const {prodsGrafs, prodsOpcs} = procesos.filtraProds({prods, proveedor_id, familia_id, ejercicio_id});
-			const pfaGrafs = procesos.actualizaPFA({provs, fams, prodsGrafs});
+			const {prodsGrafs, prodsOpcs} = procesos.filtraProds({prods, proveedor_id, familia_id, referencia});
+			const pfaGrafs = procesos.actualizaPFA({provs, fams, prodsGrafs,referencia});
 			const pfaOpcs = procesos.actualizaPFA({provs, fams, prodsOpcs});
 
 			// Crea los prods para la tabla, dejando solamente los que tienen lrActual

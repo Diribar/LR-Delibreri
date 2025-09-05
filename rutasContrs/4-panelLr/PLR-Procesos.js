@@ -62,61 +62,161 @@ module.exports = {
 	},
 
 	// Planes de acción
-	filtraProds: ({prods: prodsGrafs, proveedor_id, familia_id, ejercicio_id}) => {
+	filtraProds: ({prods, proveedor_id, familia_id, referencia}) => {
 		// Variables
-		const prodsOpcs = ["provs", "fams", "antigs"].reduce((obj, n) => ((obj[n] = prodsGrafs), obj), {});
+		const grupos = ["provs", "fams", "antigs"];
 
-		// Filtros por proveedor
+		// Crea las variables con todos los productos
+		let prodsGrCols = [...prods];
+		const prodsGrTorta = grupos.reduce((obj, n) => ((obj[n] = prods), obj), {});
+		const prodsOpcs = grupos.reduce((obj, n) => ((obj[n] = prods), obj), {});
+
+		// Filtra por proveedor
 		if (proveedor_id) {
-			prodsGrafs = prodsGrafs.filter((n) => n.proveedor_id == proveedor_id);
-			prodsOpcs.fams = prodsOpcs.fams.filter((n) => n.proveedor_id == proveedor_id);
-			prodsOpcs.antigs = prodsOpcs.antigs.filter((n) => n.proveedor_id == proveedor_id);
+			prodsGrCols = prodsGrCols.filter((n) => n.proveedor_id == proveedor_id);
+			filtra(prodsGrTorta, grupos, (n) => n.proveedor_id == proveedor_id);
+			filtra(prodsOpcs, ["fams", "antigs"], (n) => n.proveedor_id == proveedor_id); // no filtra en las opciones, para que figuren todos los proveedores
 		}
 
-		// Filtros por familia
+		// Filtra por familia
 		if (familia_id) {
-			prodsGrafs = prodsGrafs.filter((n) => n.familia_id == familia_id);
-			prodsOpcs.provs = prodsOpcs.provs.filter((n) => n.familia_id == familia_id);
-			prodsOpcs.antigs = prodsOpcs.antigs.filter((n) => n.familia_id == familia_id);
+			prodsGrCols = prodsGrCols.filter((n) => n.familia_id == familia_id);
+			filtra(prodsGrTorta, grupos, (n) => n.familia_id == familia_id);
+			filtra(prodsOpcs, ["provs", "antigs"], (n) => n.familia_id == familia_id); // no filtra en las opciones, para que figuren todas las familias
 		}
 
-		// Filtros por antigüedad
-		if (ejercicio_id) {
-			// Variables
-			const referencia = ejercicio_id == "123" ? "123" : ejercicio_id - 1;
-
-			// Filtra los productos, dejando todos los que tienen lrInicial
-			prodsGrafs = prodsGrafs.filter((n) => n["valorLr" + referencia + "Inicial"]); // se conservan los que tienen lr#Inicial, aunque no tengan lr#Actual
-
-			// Filtra los productos, dejando sólo los que tienen lrActual - para las opciones, sólo cuenta la lr#Actual
-			prodsOpcs.provs = prodsOpcs.provs.filter((n) => n["valorLr" + referencia + "Actual"]);
-			prodsOpcs.fams = prodsOpcs.fams.filter((n) => n["valorLr" + referencia + "Actual"]);
+		// Filtros por antigüedad, dejando sólo los que tienen lrActual
+		if (referencia) {
+			const campo = "valorLr" + referencia + "Actual";
+			prodsGrCols = prodsGrCols.filter((n) => n["valorLr" + referencia + "Inicial"]); // se conservan los que tienen lrInicial, para poder comparar su evolución
+			filtra(prodsGrTorta, grupos, (n) => n[campo]);
+			filtra(prodsOpcs, ["provs", "fams"], (n) => n[campo]);
 		}
 
 		// Fin
-		return {prodsGrafs, prodsOpcs};
+		return {prodsGrCols, prodsGrTorta, prodsOpcs};
 	},
-	actualizaPFA: ({provs, fams, prodsGrafs, prodsOpcs}) => {
-		// Actualiza los campos 'valorLrSinPlan' y 'valorLrConPlan'
+	procesaInfo: {
+		prodsGrCols,
+		prodsGrTorta: ({provs, fams, prodsGrTorta, referencia}) => {
+			// Variables
+			let antigs = [];
+
+			// Actualiza los campos 'valorLrSinPlan' y 'valorLrConPlan' de la LR Actual
+			provs.forEach((prov, i) => {
+				provs[i].valorLrSinPlan = prodsGrTorta.provs
+					.filter((n) => n.proveedor_id == prov.id) // el producto pertenece al proveedor
+					.filter((n) => !n.planAccion_id) // el producto no tiene plan de acción
+					.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+				provs[i].valorLrConPlan = prodsGrTorta.provs
+					.filter((n) => n.proveedor_id == prov.id) // el producto pertenece al proveedor
+					.filter((n) => n.planAccion_id) // el producto tiene plan de acción
+					.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+			});
+			fams.forEach((fam, i) => {
+				fams[i].valorLrSinPlan = prodsGrTorta.fams
+					.filter((n) => n.familia_id == fam.id) // el producto pertenece a la familia
+					.filter((n) => !n.planAccion_id) // el producto no tiene plan de acción
+					.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+				fams[i].valorLrConPlan = prodsGrTorta.fams
+					.filter((n) => n.familia_id == fam.id) // el producto pertenece a la familia
+					.filter((n) => n.planAccion_id) // el producto tiene plan de acción
+					.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+			});
+			fechasEjercs.forEach((ejerc, i) => {
+				// Si corresponde, saltea la rutina
+				if (referencia && !String(referencia).includes(i)) return; // si hay referencia, sólo procesa la antigüedad seleccionada
+
+				// Obtiene las variables de la antigüedad
+				const {id, codigo, descripcion} = ejerc;
+				const valorLrSinPlan = prodsGrTorta.antigs
+					.filter((n) => !n.planAccion_id)
+					.reduce((acum, n) => acum + n["valorLr" + i + "Actual"], 0);
+				const valorLrConPlan = prodsGrTorta.antigs
+					.filter((n) => n.planAccion_id)
+					.reduce((acum, n) => acum + n["valorLr" + i + "Actual"], 0);
+
+				// Agrega la antigüedad
+				antigs.push({id, codigo, descripcion, valorLrSinPlan, valorLrConPlan});
+			});
+
+			// Filtra y deja solamente los que tienen valorLrSinPlan o valorLrConPlan
+			provs = provs.filter((n) => n.valorLrSinPlan || n.valorLrConPlan);
+			fams = fams.filter((n) => n.valorLrSinPlan || n.valorLrConPlan);
+			antigs = antigs.filter((n) => n.valorLrSinPlan || n.valorLrConPlan); // en prodsGrafs no se deben filtrar, para que muestre la lrInicial completa
+
+			// Los ordena en forma decreciente
+			provs.sort((a, b) => b.valorLrSinPlan - a.valorLrSinPlan);
+			fams.sort((a, b) => b.valorLrSinPlan - a.valorLrSinPlan);
+
+			// Fin
+			return {provs, fams, antigs};
+		},
+		prodsOpcs: ({provs, fams, prodsOpcs, referencia}) => {
+			// Variables
+			let antigs = [];
+
+			// Consolida la información por proveedor
+			provs.forEach((prov, i) => {
+				provs[i].valorLr = prodsOpcs.provs
+					.filter((n) => n.proveedor_id == prov.id) // el producto pertenece al proveedor
+					.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+			});
+
+			// Consolida la información por proveedor
+			fams.forEach((fam, i) => {
+				fams[i].valorLr = prodsOpcs.fams
+					.filter((n) => n.familia_id == fam.id) // el producto pertenece a la familia
+					.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+			});
+
+			// Consolida la información por antigüedad
+			fechasEjercs.forEach((ejerc, i) => {
+				// Si corresponde, saltea la rutina
+				if (referencia && !String(referencia).includes(i)) return; // si hay referencia, sólo procesa la antigüedad seleccionada
+
+				// Obtiene las variables de la antigüedad
+				const {id, codigo, descripcion} = ejerc;
+				const valorLr = prodsOpcs.antigs.reduce((acum, n) => acum + n["valorLr" + i + "Actual"], 0);
+
+				// Agrega la antigüedad
+				antigs.push({id, codigo, descripcion, valorLr});
+			});
+
+			// Filtra y deja solamente los que tienen valorLrSinPlan o valorLrConPlan
+			provs = provs.filter((n) => n.valorLr);
+			fams = fams.filter((n) => n.valorLr);
+			antigs = antigs.filter((n) => n.valorLr);
+
+			// Los ordena en forma decreciente
+			provs.sort((a, b) => b.valorLr - a.valorLr);
+			fams.sort((a, b) => b.valorLr - a.valorLr);
+
+			// Fin
+			return {provs, fams, antigs};
+		},
+	},
+	actualizaPFA: ({provs, fams, prodsGrafs, prodsOpcs, referencia}) => {
+		// Actualiza los campos 'valorLrSinPlan' y 'valorLrConPlan' de la LR Actual
 		provs.forEach((prov, i) => {
 			provs[i].valorLrSinPlan = (prodsGrafs || prodsOpcs.provs)
 				.filter((n) => n.proveedor_id == prov.id) // el producto pertenece al proveedor
 				.filter((n) => !n.planAccion_id) // el producto no tiene plan de acción
-				.reduce((acum, n) => acum + n.valorLrActual, 0);
+				.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
 			provs[i].valorLrConPlan = (prodsGrafs || prodsOpcs.provs)
 				.filter((n) => n.proveedor_id == prov.id) // el producto pertenece al proveedor
 				.filter((n) => n.planAccion_id) // el producto tiene plan de acción
-				.reduce((acum, n) => acum + n.valorLrActual, 0);
+				.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
 		});
 		fams.forEach((fam, i) => {
 			fams[i].valorLrSinPlan = (prodsGrafs || prodsOpcs.fams)
 				.filter((n) => n.familia_id == fam.id) // el producto pertenece a la familia
 				.filter((n) => !n.planAccion_id) // el producto no tiene plan de acción
-				.reduce((acum, n) => acum + n.valorLrActual, 0);
+				.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
 			fams[i].valorLrConPlan = (prodsGrafs || prodsOpcs.fams)
 				.filter((n) => n.familia_id == fam.id) // el producto pertenece a la familia
 				.filter((n) => n.planAccion_id) // el producto tiene plan de acción
-				.reduce((acum, n) => acum + n.valorLrActual, 0);
+				.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
 		});
 		let antigs = [];
 		fechasEjercs.forEach((ejerc, i) => {
@@ -166,3 +266,6 @@ module.exports = {
 		return campos;
 	},
 };
+
+// Funciones
+const filtra = (obj, grupos, condicion) => grupos.forEach((k) => (obj[k] = obj[k].filter(condicion)));
