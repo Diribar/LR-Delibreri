@@ -17,9 +17,7 @@ module.exports = {
 			maestroMovs: baseDatos
 				.obtieneTodos("maestroMovs", "solucOut")
 				.then((n) => n.sort((a, b) => (a.descripcion < b.descripcion ? -1 : 1))),
-			maestroDeps: baseDatos
-				.obtieneTodosConOrden("maestroDeps", "descripcion")
-				.then((n) => n.sort((a, b) => (a.nave < b.nave ? -1 : 1))), // ordena por nave y descripción
+			maestroDeps: baseDatos.obtieneTodos("maestroDeps"),
 
 			// Configuración
 			archsCabecera: baseDatos.obtieneTodos("archsCabecera", ["tipoTabla", "relacsCampo"]),
