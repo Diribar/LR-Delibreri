@@ -2,6 +2,7 @@
 
 window.addEventListener("load", () => {
 	const domRol = document.querySelector("#derecha select[name='rol']");
+	if (!domRol) return;
 
 	// Evento
 	domRol.addEventListener("change", async () => {
