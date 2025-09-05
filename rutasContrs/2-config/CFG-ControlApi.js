@@ -64,7 +64,7 @@ module.exports = {
 	maestroDeps: {
 		alta: async (req, res) => {
 			// Variables
-			const datos = req.query; // id, descripcion, nave, lr
+			const datos = req.query; // id, descripcion, lr
 
 			// Valida los datos
 			const error = valida.maestroDeps.altaEdic(datos);

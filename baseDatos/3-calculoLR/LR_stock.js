@@ -50,8 +50,8 @@ module.exports = (sequelize, dt) => {
 
 		// Detalles
 		descripcion: {type: dt.STRING(100)},
-		proveedor_id: {type: dt.INTEGER},
-		familia_id: {type: dt.INTEGER},
+		proveedor_id: {type: dt.STRING(3)},
+		familia_id: {type: dt.STRING(4)},
 	};
 	const config = {
 		tableName: "lr_stock",

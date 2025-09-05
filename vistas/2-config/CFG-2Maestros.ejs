@@ -8,7 +8,6 @@
 				<th class="centro anchoMedio">OUT</th>
 				<th class="centro anchoMedio">Esencial</th>
 			<% } else if (subTema == "maestroDeps") { %>
-				<th class="izq anchoCorto">Nave</th>
 				<th class="centro">LR</th>
 			<% } %>
 			<th class="centro">En uso</th>
@@ -26,7 +25,6 @@
 					<td class="centro anchoMedio"><%= registro.solucOut && registro.solucOut.nombre || "-" %></td>
 					<td class="centro anchoMedio"><%= registro.esencial ? "SI" : "NO" %></td>
 				<% } else if (subTema == "maestroDeps") { %>
-					<td class="izq anchoCorto"><%= registro.nave %></td>
 					<td class="centro"><%= registro.lr ? "SI" : "NO" %></td>
 				<% } %>
 				<td class="centro"><%- registro.enUso ? "SI" : "NO" %></td>
@@ -55,7 +53,6 @@
 					</td>
 					<td class="centro"><%= registro.esencial ? "SI" : "NO" %></td>
 				<% } else if (subTema == "maestroDeps") { %>
-					<td class="izq anchoCorto"><input name="nave" type="text" class="izq" value="<%= registro.nave %>"></td>
 					<td class="centro">
 						<select name="lr" class="centro">
 							<option value="1" <% if (registro.lr) { %>selected<% } %>>SI</option>
@@ -92,7 +89,6 @@
 					</select>
 				</td>
 			<% } else if (subTema == "maestroDeps") { %>
-				<td class="izq anchoCorto"><input name="nave" type="text" class="izq" placeholder="escribilo"></td>
 				<td class="centro">
 					<select name="lr" class="centro">
 						<option value="">?</option>

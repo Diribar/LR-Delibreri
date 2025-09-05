@@ -117,13 +117,13 @@ module.exports = {
 				continue;
 			}
 			// Verifica que tenga el vínculo de la familia
-			const mFam = mFams.find((n) => n.descripcion.toLowerCase() == registro.familia.toLowerCase());
+			const mFam = mFams.find((n) => n.id.toLowerCase() == registro.familia_id.toLowerCase());
 			if (!mFam) {
 				espera.push(baseDatos.actualizaPorId(nombreTablaOrig, registro.id, {error: mensError.sinFam}));
 				continue;
 			}
 			// Verifica que tenga el vínculo del proveedor
-			const mProv = mProvs.find((n) => n.descripcion.toLowerCase() == registro.proveedor.toLowerCase());
+			const mProv = mProvs.find((n) => n.id.toLowerCase() == registro.proveedor_id.toLowerCase());
 			if (!mProv) espera.push(baseDatos.actualizaPorId(nombreTablaOrig, registro.id, {error: mensError.sinProv}));
 		}
 

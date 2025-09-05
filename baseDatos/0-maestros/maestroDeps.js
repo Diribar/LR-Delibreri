@@ -3,7 +3,6 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		id: {type: dt.STRING(10), primaryKey: true},
 		descripcion: {type: dt.STRING(20)},
-		nave: {type: dt.STRING(20)},
 		lr: {type: dt.BOOLEAN},
 		enUso: {type: dt.BOOLEAN},
 

@@ -39,12 +39,11 @@ module.exports = {
 			validacs.consolidado(descripcion, 2, 20),
 	},
 	maestroDeps: {
-		altaEdic: ({id, nuevoId, descripcion, nave, lr}) =>
+		altaEdic: ({id, nuevoId, descripcion, lr}) =>
 			validacs.consolidado(nuevoId, 1, 3) ||
 			(nuevoId != id && maestroDeps.find((n) => n.id == nuevoId) && codUsado) ||
 			validacs.consolidado(descripcion, 2, 20) ||
 			(maestroDeps.find((n) => n.id != id && n.descripcion == descripcion) && descrUsada) ||
-			validacs.consolidado(nave, 2, 20) ||
 			validacs.inputVacio(lr) ||
 			(!["0", "1"].find((n) => n == lr) && "Valor 'LR' no aceptado"),
 		edicBaja: ({id}) => (validacs.consolidado(id, 1, 10) || !maestroDeps.find((n) => n.id == id)) && regDescon,
