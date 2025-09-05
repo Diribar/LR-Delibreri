@@ -26,13 +26,19 @@ module.exports = {
 	// ABM - Agrega
 	agregaReg: (entidad, datos) => bd[entidad].create(datos).then((n) => n.toJSON()),
 	agregaRegs: (entidad, datos, opciones) => bd[entidad].bulkCreate(datos, opciones).then((n) => n.map((m) => m.toJSON())),
-	limpiaAgregaRegs: (entidad, datos, opciones) =>
-		bd[entidad].destroy({where: {}, truncate: true}).then(() => bd[entidad].bulkCreate(datos, opciones)),
-	copiaTablas: (entidadOrigen, entidadDestino, opciones) =>
-		bd[entidadDestino]
+	limpiaAgregaRegs: async (entidad, datos, opciones) => {
+		await sequelize.query("SET FOREIGN_KEY_CHECKS = 0", {raw: true});
+		await bd[entidad].destroy({where: {}, truncate: true}).then(() => bd[entidad].bulkCreate(datos, opciones));
+		await sequelize.query("SET FOREIGN_KEY_CHECKS = 1", {raw: true});
+	},
+	copiaTablas: async (entidadOrigen, entidadDestino, opciones) => {
+		await sequelize.query("SET FOREIGN_KEY_CHECKS = 0", {raw: true});
+		await bd[entidadDestino]
 			.destroy({where: {}, truncate: true}) // elimina el contenido de la tabla de destino
 			.then(() => bd[entidadOrigen].findAll()) // obtiene todos los registros de la tabla de origen
-			.then((datos) => bd[entidadDestino].bulkCreate(datos, opciones)), // copia los registros a la tabla de destino
+			.then((datos) => bd[entidadDestino].bulkCreate(datos, opciones)); // copia los registros a la tabla de destino
+		await sequelize.query("SET FOREIGN_KEY_CHECKS = 1", {raw: true});
+	},
 	agregaRegIdCorrel: async (entidad, datos) => {
 		// Variables
 		const regsId = await bd[entidad]
@@ -77,7 +83,11 @@ module.exports = {
 	variaElValorDeCampos: (entidad, id, campos) => bd[entidad].increment(campos, {where: {id}}),
 
 	// ABM - Elimina
-	eliminaTodos: (entidad) => bd[entidad].destroy({where: {}, truncate: true}),
+	eliminaTodos: async (entidad) => {
+		await sequelize.query("SET FOREIGN_KEY_CHECKS = 0", {raw: true});
+		await bd[entidad].destroy({where: {}, truncate: true});
+		await sequelize.query("SET FOREIGN_KEY_CHECKS = 1", {raw: true});
+	},
 	eliminaPorCondicion: (entidad, condicion) => bd[entidad].destroy({where: condicion}),
 	eliminaPorId: (entidad, id) => bd[entidad].destroy({where: {id}}),
 

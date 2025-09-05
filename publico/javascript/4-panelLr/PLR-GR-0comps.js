@@ -19,9 +19,14 @@ const moneda = (valor, tresDigs) => {
 	// Variables
 	const mil = 1000;
 	const unMillon = mil * mil;
+	const unBillon= unMillon * mil;
 
-	// Si corresponde, convierte en miles o millones
-	if (Math.abs(valor) >= unMillon) valor = (Math.round((valor / unMillon) * 10) / 10).toFixed(1) + "M";
+	// Si no es número, devuelve el valor original
+	if (isNaN(valor)) return valor;
+
+	// Si corresponde, convierte en otras unidades
+	if (Math.abs(valor) >= unBillon) valor = (Math.round((valor / unBillon) * 10) / 10).toFixed(1) + "B";
+	else if (Math.abs(valor) >= unMillon) valor = (Math.round((valor / unMillon) * 10) / 10).toFixed(1) + "M";
 	else if (!tresDigs && Math.abs(valor) >= mil * 100) valor = (Math.round((valor / unMillon) * 10) / 10).toFixed(1) + "M";
 	else if (Math.abs(valor) >= mil) valor = (Math.round((valor / mil) * 10) / 10).toFixed(1) + "K";
 

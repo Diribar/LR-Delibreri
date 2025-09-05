@@ -315,6 +315,10 @@ window.addEventListener("load", async () => {
 			select.appendChild(elegi);
 			select.appendChild(sinFiltro);
 
+			// Opciones 123
+			const opc123 = Array.from(opciones).find((n) => n.value == "123");
+			if (opc123) select.appendChild(opc123);
+
 			// Rutina para las opciones estándar
 			const estandar = Array.from(opciones).find((n) => n.dataset.tema == "estandar");
 			for (const registro of tabla) {
@@ -323,10 +327,6 @@ window.addEventListener("load", async () => {
 				opcion.innerHTML = registro.descripcion;
 				select.appendChild(opcion);
 			}
-
-			// Últimas opciones
-			const opc123 = Array.from(opciones).find((n) => n.value == "123");
-			if (opc123) select.appendChild(opc123);
 
 			// Asigna la opción que había sido elegida
 			const opcionElegida = cookies[campoFiltro];
