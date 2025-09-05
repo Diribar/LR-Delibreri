@@ -97,7 +97,21 @@ module.exports = {
 		return {prodsGrCols, prodsGrTorta, prodsOpcs};
 	},
 	procesaInfo: {
-		prodsGrCols,
+		prodsGrCols: ({prodsGrCols, referencia}) => {
+			// Inicial y Actual
+			const inicial = prodsGrCols.reduce((acum, n) => acum + n["valorLr" + referencia + "Inicial"], 0);
+
+			// Con y Sin plan
+			const conPlan = prodsGrCols
+				.filter((n) => n.planAccion_id)
+				.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+			const sinPlan = prodsGrCols
+				.filter((n) => !n.planAccion_id)
+				.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+
+			// Fin
+			return {inicial, conPlan, sinPlan};
+		},
 		prodsGrTorta: ({provs, fams, prodsGrTorta, referencia}) => {
 			// Variables
 			let antigs = [];
@@ -195,54 +209,6 @@ module.exports = {
 			// Fin
 			return {provs, fams, antigs};
 		},
-	},
-	actualizaPFA: ({provs, fams, prodsGrafs, prodsOpcs, referencia}) => {
-		// Actualiza los campos 'valorLrSinPlan' y 'valorLrConPlan' de la LR Actual
-		provs.forEach((prov, i) => {
-			provs[i].valorLrSinPlan = (prodsGrafs || prodsOpcs.provs)
-				.filter((n) => n.proveedor_id == prov.id) // el producto pertenece al proveedor
-				.filter((n) => !n.planAccion_id) // el producto no tiene plan de acción
-				.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
-			provs[i].valorLrConPlan = (prodsGrafs || prodsOpcs.provs)
-				.filter((n) => n.proveedor_id == prov.id) // el producto pertenece al proveedor
-				.filter((n) => n.planAccion_id) // el producto tiene plan de acción
-				.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
-		});
-		fams.forEach((fam, i) => {
-			fams[i].valorLrSinPlan = (prodsGrafs || prodsOpcs.fams)
-				.filter((n) => n.familia_id == fam.id) // el producto pertenece a la familia
-				.filter((n) => !n.planAccion_id) // el producto no tiene plan de acción
-				.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
-			fams[i].valorLrConPlan = (prodsGrafs || prodsOpcs.fams)
-				.filter((n) => n.familia_id == fam.id) // el producto pertenece a la familia
-				.filter((n) => n.planAccion_id) // el producto tiene plan de acción
-				.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
-		});
-		let antigs = [];
-		fechasEjercs.forEach((ejerc, i) => {
-			const {id, codigo, descripcion} = ejerc;
-			antigs[i] = {id, codigo, descripcion};
-			if (prodsGrafs) antigs[i].valorLrInicial = prodsGrafs.reduce((acum, n) => acum + n["valorLr" + i + "Inicial"], 0); // sólo se lo necesita para el gráfico Inicial vs Final
-			antigs[i].valorLrSinPlan = (prodsGrafs || prodsOpcs.antigs)
-				.filter((n) => !n.planAccion_id)
-				.reduce((acum, n) => acum + n["valorLr" + i + "Actual"], 0);
-			antigs[i].valorLrConPlan = (prodsGrafs || prodsOpcs.antigs)
-				.filter((n) => n.planAccion_id)
-				.reduce((acum, n) => acum + n["valorLr" + i + "Actual"], 0);
-		});
-
-		// Filtra y deja solamente los que tienen valorLrSinPlan o valorLrConPlan
-		provs = provs.filter((n) => n.valorLrSinPlan || n.valorLrConPlan);
-		fams = fams.filter((n) => n.valorLrSinPlan || n.valorLrConPlan);
-		if (prodsOpcs) antigs = antigs.filter((n) => n.valorLrSinPlan || n.valorLrConPlan); // en prodsGrafs no se deben filtrar, para que muestre la lrInicial completa
-
-		// Los ordena en forma decreciente
-		provs.sort((a, b) => b.valorLrSinPlan - a.valorLrSinPlan);
-		fams.sort((a, b) => b.valorLrSinPlan - a.valorLrSinPlan);
-		antigs.sort((a, b) => b.valorLrSinPlan - a.valorLrSinPlan);
-
-		// Fin
-		return {provs, fams, antigs};
 	},
 	eligeLasColumnasDescarga: (prods) => {
 		// Elije las columnas del archivo
