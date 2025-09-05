@@ -52,8 +52,8 @@ module.exports = {
 			for (let i = 0; i < 4; i++) {
 				const hasta = comp.fechas.nueva({fecha: desde, diasDif: -1});
 				desde = i < 3 ? comp.fechas.nueva({fecha: desde, mesesDif: -fechasPlazoMeses}) : "0"; // el ej3 no tiene fecha 'desde'
-				const codigo = i < 3 ? "ej" + -i : "< -2";
-				const descripcion = i < 3 ? "Ejercicio " + -i : "Ejercs < -2";
+				const codigo = "ej" + -i;
+				const descripcion = "Ejercicio " + -i;
 				registros.push({codigo, descripcion, desde, hasta});
 			}
 
