@@ -1,5 +1,3 @@
-// SIEMPRE
-
 module.exports = (sequelize, dt) => {
 	const alias = "stock";
 	const columns = {
