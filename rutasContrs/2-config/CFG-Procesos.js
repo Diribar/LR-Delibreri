@@ -227,45 +227,27 @@ module.exports = {
 		},
 		obtieneMaestros: (tablasOrigs) => {
 			// Variables
-			const tablasFinales = {};
-			const maestroProds = [];
+			const tablasFinales = {maestroProds: []};
 
 			// Obtiene el código de los productos de LR
 			const codsProdsLr = obtieneCodsProdsLR(tablasOrigs);
 
 			// Crea los registros en el Maestro de productos
-			for (const codProd of codsProdsLr) maestroProds.push(tablasOrigs.maestroProds.find((n) => n.codProd == codProd));
-
-			// Maestro de proveedores
-			const proveedores = [...new Set(maestroProds.map((n) => n.proveedor))].sort((a, b) => (a < b ? -1 : 1));
-			proveedores.forEach((proveedor, i) => {
-				const registro = tablasOrigs.maestroProvs.find((n) => n.descripcion == proveedor);
-				registro.id = i + 1;
-				!tablasFinales.maestroProvs
-					? (tablasFinales.maestroProvs = [registro])
-					: tablasFinales.maestroProvs.push(registro);
+			codsProdsLr.forEach((codProd, i) => {
+				tablasFinales.maestroProds.push({...tablasOrigs.maestroProds.find((n) => n.codProd == codProd), id: i + 1});
 			});
 
-			// Maestro de familias
-			const familias = [...new Set(maestroProds.map((n) => n.familia))].sort((a, b) => (a < b ? -1 : 1));
-			familias.forEach((familia, i) => {
-				const registro = tablasOrigs.maestroFams.find((n) => n.descripcion == familia);
-				registro.id = i + 1;
-				!tablasFinales.maestroFams ? (tablasFinales.maestroFams = [registro]) : tablasFinales.maestroFams.push(registro);
-			});
+			// Maestro de proveedores - sólo los necesarios
+			const provs_ids = [...new Set(tablasFinales.maestroProds.map((n) => n.proveedor_id))];
+			tablasFinales.maestroProvs = tablasOrigs.maestroProvs
+				.filter((n) => provs_ids.includes(n.id))
+				.sort((a, b) => (a < b ? -1 : 1));
 
-			// Maestro de productos - reemplaza las descripciones por los ids de proveedor y familia
-			maestroProds.forEach((maestroProd, i) => {
-				// Obtiene el id, el proveedor_id y la familia_id
-				maestroProd.id = i + 1;
-				maestroProd.proveedor_id = tablasFinales.maestroProvs.find((n) => n.descripcion == maestroProd.proveedor).id;
-				maestroProd.familia_id = tablasFinales.maestroFams.find((n) => n.descripcion == maestroProd.familia).id;
-
-				// Crea el registro definitivo
-				!tablasFinales.maestroProds
-					? (tablasFinales.maestroProds = [maestroProd])
-					: tablasFinales.maestroProds.push(maestroProd);
-			});
+			// Maestro de familias - sólo las necesarias
+			const fams_ids = [...new Set(tablasFinales.maestroProds.map((n) => n.familia_id))];
+			tablasFinales.maestroFams = tablasOrigs.maestroFams
+				.filter((n) => fams_ids.includes(n.id))
+				.sort((a, b) => (a < b ? -1 : 1));
 
 			return tablasFinales;
 		},
@@ -274,7 +256,7 @@ module.exports = {
 			const tablasFinales = {};
 
 			// Obtiene el código de los productos de LR
-			const codsProdsLr = obtieneCodsProdsLR(tablasOrigs); // no se usa el maestroProds_orig, porque puede tener codProds que no se necesitan
+			const codsProdsLr = obtieneCodsProdsLR(tablasOrigs);
 
 			// Crea las tablas inEjs y stock - Consolida por producto (producto_id y cantidad)
 			for (const nombreTabla in tablasOrigs) {
@@ -293,14 +275,15 @@ module.exports = {
 					if (!cantidad) return;
 
 					// Crea el registro
-					const registro =
-						nombreTabla == "stock"
-							? {
-									...tablasOrigs.maestroProds.find((n) => n.codProd == codProd),
-									cantInicial: cantidad,
-									// costoUnit: tablasOrigs.stock.find((n) => n.codProd == codProd).costoUnit,
-							  }
-							: {producto_id: i + 1, cantidad};
+					let registro;
+					if (nombreTabla == "stock")
+						registro = {
+							...tablasOrigs.maestroProds.find((n) => n.codProd == codProd),
+							cantInicial: cantidad,
+							id: i + 1,
+						};
+					// costoUnit: tablasOrigs.stock.find((n) => n.codProd == codProd).costoUnit,
+					if (nombreTabla != "stock") registro = {producto_id: i + 1, cantidad};
 
 					// Agrega el registro
 					tablasFinales[nombreTabla] // no puede usarse el 'i' por el 'continue'
@@ -463,4 +446,4 @@ const mensError = {
 const datosCero = {valorLrInicial: 0, valorLrActual: 0};
 
 // Funciones
-const obtieneCodsProdsLR = (tablas) => [...new Set(tablas.stock.map((n) => n.codProd))].sort((a, b) => (a < b ? -1 : 1));
+const obtieneCodsProdsLR = (tablas) => [...new Set(tablas.stock.map((n) => n.codProd))].sort((a, b) => (a < b ? -1 : 1)); // no se usa el maestroProds_orig, porque puede tener codProds que no se necesitan
