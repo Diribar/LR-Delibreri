@@ -34,12 +34,11 @@ const validaLogin = async ({email, contrasena}) => {
 		// Obtiene el usuario
 		const usuario = await comp.obtieneUsuarioPorMail(email);
 
-		// Averigua si el registro tiene contraseña en la tabla
-		const {contrasena: contrTabla} = usuario;
-		if (!contrTabla)
+		// Si no existe el usuario y la contraseña es inválida, es error
+		if (!usuario || !bcryptjs.compareSync(contrasena, usuario.contrasena)) errores.credenciales = true;
+		// Si existe pero no tiene contraseña, también es error
+		else if (!usuario.contrasena)
 			errores.contrasena = "Este mail no tiene una contraseña asociada aún, debés generarla con el ícono rojo de abajo";
-		// Si tiene contraseña, la verifica con la ingresada
-		else errores.credenciales = !usuario || !bcryptjs.compareSync(contrasena, contrTabla);
 	}
 
 	// Consolida la información

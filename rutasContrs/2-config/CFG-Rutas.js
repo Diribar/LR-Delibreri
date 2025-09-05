@@ -43,11 +43,13 @@ router.get("/api/ai-edicion", API.archsInput.edicion);
 router.get("/api/ai-baja", API.archsInput.baja);
 router.get("/archivos-input", vista.archsInput);
 
-// Depende - Carga de Archivos
+// Depende - Carga de Archivos - GET
 router.get("/api/ca-obtiene-datos-iniciales", login, API.cargaArchs.datosInicialesCa);
 router.get("/api/ca-descarga-una-tabla", API.cargaArchs.descargaUnaTabla);
 router.get("/carga-de-archivos-bloqueo", aCA_desbl, aFC_bloq, vista.cargaArchs.form);
 router.get("/carga-de-archivos-desbloqueo", aCA_bloq, aFC_bloq, vista.cargaArchs.form);
+
+// Depende - Carga de Archivos - POST
 router.post("/carga-de-archivos-bloqueo", aCA_desbl, CA_aptoPost, vista.cargaArchs.bloqueo);
 router.post("/carga-de-archivos-desbloqueo", aCA_bloq, aFC_bloq, vista.cargaArchs.desbloqueo);
 
