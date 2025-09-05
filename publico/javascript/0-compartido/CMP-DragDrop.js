@@ -301,17 +301,31 @@ window.addEventListener("load", async () => {
 					regTabla[campoTabla] = valor;
 				}
 
-				// Detecta repetidos
-				if (!errorFe && ["mProvs", "mFams", "mProds"].includes(tipoTabla_id)) {
-					if (tablaGuardar.find((n) => n.descripcion.toLowerCase() == regTabla.descripcion.toLowerCase()))
-						errorFe = mensajesError.repetido(relacCamposTablaArch.descripcion);
-				}
+				// Detecta repetidos - id
+				if (
+					!errorFe &&
+					["mProvs", "mFams"].includes(tipoTabla_id) &&
+					tablaGuardar.find((n) => n.id.toLowerCase() == regTabla.id.toLowerCase())
+				)
+					errorFe = mensajesError.repetido(relacCamposTablaArch.id);
+
+				// Detecta repetidos - descripción
+				if (
+					!errorFe &&
+					["mProvs", "mFams", "mProds"].includes(tipoTabla_id) &&
+					tablaGuardar.find((n) => n.descripcion.toLowerCase() == regTabla.descripcion.toLowerCase())
+				)
+					errorFe = mensajesError.repetido(relacCamposTablaArch.descripcion);
+
+				// Detecta repetidos - código de producto
 				if (!errorFe && tipoTabla_id == "mProds" && tablaGuardar.find((n) => n.codProd == regTabla.codProd))
 					errorFe = mensajesError.repetido(relacCamposTablaArch.codProd);
+
+				// Detecta repetidos - combo codProd + posición
 				if (
 					!errorFe &&
 					tipoTabla_id == "stock" &&
-					tablaGuardar.find((n) => n.codProd == regTabla.codProd && n.posicion == regTabla.posicion) // combo codProd + posición
+					tablaGuardar.find((n) => n.codProd == regTabla.codProd && n.posicion == regTabla.posicion)
 				)
 					errorFe = mensajesError.comboRepetido(relacCamposTablaArch.codProd, relacCamposTablaArch.deposito_id);
 
