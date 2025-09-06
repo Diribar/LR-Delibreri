@@ -109,59 +109,34 @@ window.addEventListener("load", async () => {
 		// Tipos de gráfico
 		inicioActual: function () {
 			// Variables
-			const {pfaGrafs} = datosBeProds;
-			const {antigs} = pfaGrafs;
-			const ejercicio_id = FN.cookies("ejercicio_id"); // se necesita sacar de la cookie porque el select se actualiza más tarde
-			const indice = ejercicio_id && antigs.findIndex((n) => n.id == ejercicio_id);
-
-			// Toma el valor de LR exclusivamente de los ejercicios elegidos
-			const valorLrInicial =
-				ejercicio_id && indice > -1
-					? antigs[indice].valorLrInicial // LR de un ejercicio
-					: antigs
-							.filter((n) => n.codigo != "ej0") // porque es LR123
-							.reduce((acum, n) => acum + n.valorLrInicial, 0);
-
-			const valorConPlan = ejercicio_id
-				? indice > -1
-					? antigs[indice].valorLrConPlan // LR de un ejercicio
-					: antigs
-							.filter((n) => n.codigo != "ej0") // porque es LR123
-							.reduce((acum, n) => acum + n.valorLrConPlan, 0)
-				: antigs.reduce((acum, n) => acum + n.valorLrConPlan, 0); // LR completo
-			const valorSinPlan = ejercicio_id
-				? indice > -1
-					? antigs[indice].valorLrSinPlan // LR de un ejercicio
-					: antigs
-							.filter((n) => n.codigo != "ej0") // porque es LR123
-							.reduce((acum, n) => acum + n.valorLrSinPlan, 0)
-				: antigs.reduce((acum, n) => acum + n.valorLrSinPlan, 0); // LR completo
+			const {prodsGrCols} = datosBeProds;
+			const {inicial, conPlan, sinPlan} = prodsGrCols;
 
 			// Actualiza el gráfico
-			this.columnas({valorLrInicial, valorSinPlan, valorConPlan});
+			this.columnas({valorLrInicial: inicial, valorSinPlan: sinPlan, valorConPlan: conPlan});
 
 			// Fin
 			return;
 		},
 		proveedores: function () {
 			// Variables
-			const {pfaGrafs} = datosBeProds;
-			const {provs} = pfaGrafs;
-			const {tabla, valorConPlan} = FN.valorActual(provs);
 			const titulo = "LR x Proveedor";
+			const {prodsGrTorta} = datosBeProds;
+			const {provs} = prodsGrTorta;
+			const {tabla, valorConPlan} = FN.valorActual(provs);
 
 			// Actualiza el gráfico
-			this.torta({dom: DOM.grProv, tabla, valorConPlan, titulo});
+			this.torta({dom: DOM.grProv, titulo, tabla, valorConPlan});
 
 			// Fin
 			return;
 		},
 		familias: function () {
 			// Variables
-			const {pfaGrafs} = datosBeProds;
-			const {fams} = pfaGrafs;
-			const {tabla, valorConPlan} = FN.valorActual(fams);
 			const titulo = "LR x Familia";
+			const {prodsGrTorta} = datosBeProds;
+			const {fams} = prodsGrTorta;
+			const {tabla, valorConPlan} = FN.valorActual(fams);
 
 			// Actualiza el gráfico
 			this.torta({dom: DOM.grFam, tabla, valorConPlan, titulo});
@@ -171,10 +146,10 @@ window.addEventListener("load", async () => {
 		},
 		antigs: function () {
 			// Variables
-			const {pfaGrafs} = datosBeProds;
-			const {antigs} = pfaGrafs;
-			const {tabla, valorConPlan} = FN.valorActual(antigs);
 			const titulo = "LR x Antiguedad";
+			const {prodsGrTorta} = datosBeProds;
+			const {antigs} = prodsGrTorta;
+			const {tabla, valorConPlan} = FN.valorActual(antigs);
 
 			// Actualiza el gráfico
 			this.torta({dom: DOM.grEjerc, tabla, valorConPlan, titulo});
@@ -292,8 +267,8 @@ window.addEventListener("load", async () => {
 	const actualizaOpcsGrafs = {
 		consolidado: function () {
 			// Variables
-			const {pfaOpcs} = datosBeProds;
-			const {provs, fams, antigs} = pfaOpcs;
+			const {prodsOpcs} = datosBeProds;
+			const {provs, fams, antigs} = prodsOpcs;
 			const cookies = FN.cookies();
 
 			// Actualiza las opciones

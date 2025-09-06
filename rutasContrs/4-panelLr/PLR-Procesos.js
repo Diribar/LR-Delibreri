@@ -62,20 +62,31 @@ module.exports = {
 	},
 
 	// Planes de acción
-	filtraProds: ({prods, proveedor_id, familia_id, referencia}) => {
+	obtieneEj_id: (ejercicio_id) => {
+		return ejercicio_id
+			? ejercicio_id == "123"
+				? "123"
+				: ejercicio_id == "23"
+				? "23"
+				: ejercicio_id - 1 // se le resta 1, porque el id de ej0 es 1
+			: ""; // tiene que ser '', para que no afecte al filtro
+	},
+	filtra: ({prods, proveedor_id, familia_id, ej_id}) => {
 		// Variables
 		const grupos = ["provs", "fams", "antigs"];
 
 		// Crea las variables con todos los productos
+		let prodsTabla = [...prods];
 		let prodsGrCols = [...prods];
-		const prodsGrTorta = grupos.reduce((obj, n) => ((obj[n] = prods), obj), {});
-		const prodsOpcs = grupos.reduce((obj, n) => ((obj[n] = prods), obj), {});
+		let prodsGrTorta = grupos.reduce((obj, n) => ((obj[n] = prods), obj), {});
+		let prodsOpcs = grupos.reduce((obj, n) => ((obj[n] = prods), obj), {});
 
 		// Filtra por proveedor
 		if (proveedor_id) {
 			prodsGrCols = prodsGrCols.filter((n) => n.proveedor_id == proveedor_id);
 			filtra(prodsGrTorta, grupos, (n) => n.proveedor_id == proveedor_id);
 			filtra(prodsOpcs, ["fams", "antigs"], (n) => n.proveedor_id == proveedor_id); // no filtra en las opciones, para que figuren todos los proveedores
+			prodsTabla = prodsTabla.filter((n) => n.proveedor_id == proveedor_id);
 		}
 
 		// Filtra por familia
@@ -83,36 +94,38 @@ module.exports = {
 			prodsGrCols = prodsGrCols.filter((n) => n.familia_id == familia_id);
 			filtra(prodsGrTorta, grupos, (n) => n.familia_id == familia_id);
 			filtra(prodsOpcs, ["provs", "antigs"], (n) => n.familia_id == familia_id); // no filtra en las opciones, para que figuren todas las familias
+			prodsTabla = prodsTabla.filter((n) => n.familia_id == familia_id);
 		}
 
 		// Filtros por antigüedad, dejando sólo los que tienen lrActual
-		if (referencia) {
-			const campo = "valorLr" + referencia + "Actual";
-			prodsGrCols = prodsGrCols.filter((n) => n["valorLr" + referencia + "Inicial"]); // se conservan los que tienen lrInicial, para poder comparar su evolución
+		if (ej_id !== "") {
+			const campo = "valorLr" + ej_id + "Actual";
+			prodsGrCols = prodsGrCols.filter((n) => n["valorLr" + ej_id + "Inicial"]); // se conservan los que tienen lrInicial, para poder comparar su evolución
 			filtra(prodsGrTorta, grupos, (n) => n[campo]);
 			filtra(prodsOpcs, ["provs", "fams"], (n) => n[campo]);
+			prodsTabla = prodsTabla.filter((n) => n["valorLr" + ej_id + "Actual"]); // se conservan los que tienen lrInicial, para poder comparar su evolución
 		}
 
 		// Fin
-		return {prodsGrCols, prodsGrTorta, prodsOpcs};
+		return {prodsGrCols, prodsGrTorta, prodsOpcs, prodsTabla};
 	},
 	procesaInfo: {
-		prodsGrCols: ({prodsGrCols, referencia}) => {
+		prodsGrCols: ({prodsGrCols, ej_id}) => {
 			// Inicial y Actual
-			const inicial = prodsGrCols.reduce((acum, n) => acum + n["valorLr" + referencia + "Inicial"], 0);
+			const inicial = prodsGrCols.reduce((acum, n) => acum + n["valorLr" + ej_id + "Inicial"], 0);
 
 			// Con y Sin plan
 			const conPlan = prodsGrCols
 				.filter((n) => n.planAccion_id)
-				.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+				.reduce((acum, n) => acum + n["valorLr" + ej_id + "Actual"], 0);
 			const sinPlan = prodsGrCols
 				.filter((n) => !n.planAccion_id)
-				.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+				.reduce((acum, n) => acum + n["valorLr" + ej_id + "Actual"], 0);
 
 			// Fin
 			return {inicial, conPlan, sinPlan};
 		},
-		prodsGrTorta: ({provs, fams, prodsGrTorta, referencia}) => {
+		prodsGrTorta: ({provs, fams, prodsGrTorta, ej_id}) => {
 			// Variables
 			let antigs = [];
 
@@ -121,25 +134,25 @@ module.exports = {
 				provs[i].valorLrSinPlan = prodsGrTorta.provs
 					.filter((n) => n.proveedor_id == prov.id) // el producto pertenece al proveedor
 					.filter((n) => !n.planAccion_id) // el producto no tiene plan de acción
-					.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+					.reduce((acum, n) => acum + n["valorLr" + ej_id + "Actual"], 0);
 				provs[i].valorLrConPlan = prodsGrTorta.provs
 					.filter((n) => n.proveedor_id == prov.id) // el producto pertenece al proveedor
 					.filter((n) => n.planAccion_id) // el producto tiene plan de acción
-					.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+					.reduce((acum, n) => acum + n["valorLr" + ej_id + "Actual"], 0);
 			});
 			fams.forEach((fam, i) => {
 				fams[i].valorLrSinPlan = prodsGrTorta.fams
 					.filter((n) => n.familia_id == fam.id) // el producto pertenece a la familia
 					.filter((n) => !n.planAccion_id) // el producto no tiene plan de acción
-					.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+					.reduce((acum, n) => acum + n["valorLr" + ej_id + "Actual"], 0);
 				fams[i].valorLrConPlan = prodsGrTorta.fams
 					.filter((n) => n.familia_id == fam.id) // el producto pertenece a la familia
 					.filter((n) => n.planAccion_id) // el producto tiene plan de acción
-					.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+					.reduce((acum, n) => acum + n["valorLr" + ej_id + "Actual"], 0);
 			});
 			fechasEjercs.forEach((ejerc, i) => {
 				// Si corresponde, saltea la rutina
-				if (referencia && !String(referencia).includes(i)) return; // si hay referencia, sólo procesa la antigüedad seleccionada
+				if (ej_id && !String(ej_id).includes(i)) return; // si hay ej_id, sólo procesa la antigüedad seleccionada
 
 				// Obtiene las variables de la antigüedad
 				const {id, codigo, descripcion} = ejerc;
@@ -166,7 +179,7 @@ module.exports = {
 			// Fin
 			return {provs, fams, antigs};
 		},
-		prodsOpcs: ({provs, fams, prodsOpcs, referencia}) => {
+		prodsOpcs: ({provs, fams, prodsOpcs, ej_id}) => {
 			// Variables
 			let antigs = [];
 
@@ -174,20 +187,20 @@ module.exports = {
 			provs.forEach((prov, i) => {
 				provs[i].valorLr = prodsOpcs.provs
 					.filter((n) => n.proveedor_id == prov.id) // el producto pertenece al proveedor
-					.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+					.reduce((acum, n) => acum + n["valorLr" + ej_id + "Actual"], 0);
 			});
 
 			// Consolida la información por proveedor
 			fams.forEach((fam, i) => {
 				fams[i].valorLr = prodsOpcs.fams
 					.filter((n) => n.familia_id == fam.id) // el producto pertenece a la familia
-					.reduce((acum, n) => acum + n["valorLr" + referencia + "Actual"], 0);
+					.reduce((acum, n) => acum + n["valorLr" + ej_id + "Actual"], 0);
 			});
 
 			// Consolida la información por antigüedad
 			fechasEjercs.forEach((ejerc, i) => {
 				// Si corresponde, saltea la rutina
-				if (referencia && !String(referencia).includes(i)) return; // si hay referencia, sólo procesa la antigüedad seleccionada
+				if (ej_id && !String(ej_id).includes(i)) return; // si hay ej_id, sólo procesa la antigüedad seleccionada
 
 				// Obtiene las variables de la antigüedad
 				const {id, codigo, descripcion} = ejerc;
@@ -209,7 +222,31 @@ module.exports = {
 			// Fin
 			return {provs, fams, antigs};
 		},
+		prodsTabla: ({prodsTabla, ej_id, filtroPlanAccion_id: plan_id}) => {
+			// Filtra los productos por el plan de acción
+			if (plan_id) {
+				const condicion = (n) =>
+					(plan_id == "sinPlan" && !n.planAccion_id) ||
+					(plan_id == "algunPlan" && n.planAccion_id) ||
+					n.planAccion_id == plan_id;
+				prodsTabla = prodsTabla.filter(condicion);
+			}
+
+			// Obtiene las variables de la antigüedad
+			prodsTabla.forEach((prod, i) => {
+				const cantLr = prod["cantLr" + ej_id + "Actual"];
+				const valorLr = prod["valorLr" + ej_id + "Actual"];
+				prodsTabla[i] = {...prodsTabla[i], cantLr, valorLr};
+			});
+
+			// Ordena los productos por lrActual
+			prodsTabla = prodsTabla.sort((a, b) => b.valorLr - a.valorLr).slice(0, 8);
+
+			// Fin
+			return prodsTabla;
+		},
 	},
+	obtieneProdsTabla: ({prods, proveedor_id, familia_id, ej_id}) => {},
 	eligeLasColumnasDescarga: (prods) => {
 		// Elije las columnas del archivo
 		const valores = prods.map((n) => [

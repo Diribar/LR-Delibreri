@@ -15,45 +15,23 @@ module.exports = {
 		obtieneProductos: async (req, res) => {
 			// Variables
 			const {filtroPlanAccion_id, proveedor_id, familia_id, ejercicio_id} = req.cookies;
-			const referencia = ejercicio_id
-				? ejercicio_id == "123"
-					? "123"
-					: ejercicio_id == "23"
-					? "23"
-					: ejercicio_id - 1 // se le resta 1, porque el id de ej0 es 1
-				: "";// tiene que ser '', para que no afecte al filtro
-			let prodsTabla;
-
-			// Filtra los productos por prov, fam, antig
+			const ej_id = procesos.obtieneEj_id(ejercicio_id);
+			console.log(101, ej_id, ejercicio_id);
 			const [provs, fams, prods] = await Promise.all([
 				baseDatos.obtieneTodos("maestroProvs"),
 				baseDatos.obtieneTodos("maestroFams"),
 				baseDatos.obtieneTodos("stock", ["proveedor", "familia"]),
 			]);
-			const {prodsGrafs, prodsOpcs} = procesos.filtraProds({prods, proveedor_id, familia_id, referencia});
-			const pfaGrafs = procesos.actualizaPFA({provs, fams, prodsGrafs,referencia});
-			const pfaOpcs = procesos.actualizaPFA({provs, fams, prodsOpcs});
 
-			// Crea los prods para la tabla, dejando solamente los que tienen lrActual
-			if (ejercicio_id) {
-				const referencia = ejercicio_id == "123" ? "123" : ejercicio_id - 1;
-				prodsTabla = prodsGrafs.filter((n) => n["valorLr" + referencia + "Actual"]);
-			} else prodsTabla = prodsGrafs.filter((n) => n.cantLrActual);
-
-			// Filtra los productos por el plan de acción
-			if (filtroPlanAccion_id)
-				prodsTabla =
-					filtroPlanAccion_id == "sinPlan"
-						? prodsTabla.filter((n) => !n.planAccion_id)
-						: filtroPlanAccion_id == "algunPlan"
-						? prodsTabla.filter((n) => n.planAccion_id)
-						: prodsTabla.filter((n) => n.planAccion_id == filtroPlanAccion_id);
-
-			// Ordena los productos por lrActual
-			prodsTabla = prodsTabla.sort((a, b) => b.valorLrActual - a.valorLrActual).slice(0, 8);
+			// Obtiene la info para el gráfico de columnas, los gráficos de torta, las opciones de los filtros, la tabla de productos
+			let {prodsGrCols, prodsGrTorta, prodsOpcs, prodsTabla} = procesos.filtra({prods, proveedor_id, familia_id, ej_id});
+			prodsGrCols = procesos.procesaInfo.prodsGrCols({prodsGrCols, ej_id});
+			prodsGrTorta = procesos.procesaInfo.prodsGrTorta({provs, fams, prodsGrTorta, ej_id});
+			prodsOpcs = procesos.procesaInfo.prodsOpcs({provs, fams, prodsOpcs, ej_id});
+			prodsTabla = procesos.procesaInfo.prodsTabla({prodsTabla, ej_id, filtroPlanAccion_id});
 
 			// Fin
-			return res.json({pfaGrafs, pfaOpcs, prodsTabla});
+			return res.json({prodsGrCols, prodsGrTorta, prodsOpcs, prodsTabla});
 		},
 		descargaProds: async (req, res) => {
 			// Variables
