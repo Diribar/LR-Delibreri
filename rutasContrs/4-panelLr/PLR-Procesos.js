@@ -112,7 +112,8 @@ module.exports = {
 	procesaInfo: {
 		prodsGrCols: ({prodsGrCols, ej_id}) => {
 			// Inicial y Actual
-			const inicial = prodsGrCols.reduce((acum, n) => acum + n["valorLr" + ej_id + "Inicial"], 0);
+			const ejIdInicial = ej_id === "" ? "123" : ej_id;
+			const inicial = prodsGrCols.reduce((acum, n) => acum + n["valorLr" + ejIdInicial + "Inicial"], 0);
 
 			// Con y Sin plan
 			const conPlan = prodsGrCols
@@ -152,7 +153,7 @@ module.exports = {
 			});
 			fechasEjercs.forEach((ejerc, i) => {
 				// Si corresponde, saltea la rutina
-				if (ej_id && !String(ej_id).includes(i)) return; // si hay ej_id, sólo procesa la antigüedad seleccionada
+				if (ej_id !== "" && !String(ej_id).includes(i)) return; // si hay ej_id, sólo acepta la antigüedad seleccionada
 
 				// Obtiene las variables de la antigüedad
 				const {id, codigo, descripcion} = ejerc;
@@ -199,9 +200,6 @@ module.exports = {
 
 			// Consolida la información por antigüedad
 			fechasEjercs.forEach((ejerc, i) => {
-				// Si corresponde, saltea la rutina
-				if (ej_id && !String(ej_id).includes(i)) return; // si hay ej_id, sólo procesa la antigüedad seleccionada
-
 				// Obtiene las variables de la antigüedad
 				const {id, codigo, descripcion} = ejerc;
 				const valorLr = prodsOpcs.antigs.reduce((acum, n) => acum + n["valorLr" + i + "Actual"], 0);
