@@ -322,17 +322,17 @@ module.exports = {
 				const valorInicial = Math.round(cantInicial * costoUnit);
 
 				// Obtiene los parámetros - ej0
-				const inEj0 = tInEj0.find((n) => n.producto_id == stkProd_id)?.cantidad || 0;
+				const inEj0 = Math.max(0, tInEj0.find((n) => n.producto_id == stkProd_id)?.cantidad || 0);
 				const cantLr0Inicial = Math.min(inEj0, cantInicial);
 				const valorLr0Inicial = Math.round(cantLr0Inicial * costoUnit);
 
 				// Obtiene los parámetros - ej1
-				const inEj1 = tInEj1.find((n) => n.producto_id == stkProd_id)?.cantidad || 0;
+				const inEj1 = Math.max(0, tInEj1.find((n) => n.producto_id == stkProd_id)?.cantidad || 0);
 				const cantLr1Inicial = Math.min(inEj1, cantInicial - cantLr0Inicial);
 				const valorLr1Inicial = Math.round(cantLr1Inicial * costoUnit);
 
 				// Obtiene los parámetros - ej2
-				const inEj2 = tInEj2.find((n) => n.producto_id == stkProd_id)?.cantidad || 0;
+				const inEj2 = Math.max(0, tInEj2.find((n) => n.producto_id == stkProd_id)?.cantidad || 0);
 				const cantLr2Inicial = Math.min(inEj2, cantInicial - cantLr0Inicial - cantLr1Inicial);
 				const valorLr2Inicial = Math.round(cantLr2Inicial * costoUnit);
 
