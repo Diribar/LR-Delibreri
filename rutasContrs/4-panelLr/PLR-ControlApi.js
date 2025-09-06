@@ -16,7 +16,6 @@ module.exports = {
 			// Variables
 			const {filtroPlanAccion_id, proveedor_id, familia_id, ejercicio_id} = req.cookies;
 			const ej_id = procesos.obtieneEj_id(ejercicio_id);
-			console.log(101, ej_id, ejercicio_id);
 			const [provs, fams, prods] = await Promise.all([
 				baseDatos.obtieneTodos("maestroProvs"),
 				baseDatos.obtieneTodos("maestroFams"),
